@@ -2,11 +2,12 @@
 p5js + puredata 
 
 ## Current status
-This is an attempt to use p5js as gui with pd4web
+This is an attempt to use p5js as gui with pd4web 
 
 ## project folder structure
 
-see pd4web doc
+see pd4web doc  
+https://charlesneimog.github.io/pd4web/
 
 
 ## develop / debug mode
