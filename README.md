@@ -9,7 +9,36 @@ This is an attempt to use p5js as gui with pd4web
 ## project folder structure
 
 see pd4web documentation 
-https://charlesneimog.github.io/pd4web/
+https://charlesneimog.github.io/pd4web/patch/#folder-structure
+
+├─ PROJECT_FOLDER
+└── audios/
+    ├── AllMyAudioFiles.wav
+    └── AllMyAudioFiles.aif
+└── export/
+    ├── assets/				<- folder copied from "sketch" folder
+    ├── libraries/
+    	├── p5.min.js
+    	└── p5.touchgui.js
+    ├── index.html
+    └── sketch.js			<- file copied from "sketch" folder
+└── extras/
+    ├── extrathings.png
+    └── mygesture.svg
+└── libs/
+    ├── pdAbstraction1.pd
+    └── pdAbstraction2.pd
+└── node/
+    └── bridge.js  
+└── sketch/
+    ├── assets/
+    ├── libraries/
+    ├── sketch.js
+    └── sketch.properties
+├── main.pd					<- pd main patch
+├── osc-bridge.pd			<- patch for "tethering" mode
+└──	README.md				(this file)
+
 
 
 ## develop / debug mode
