@@ -12,7 +12,7 @@ see pd4web documentation
 https://charlesneimog.github.io/pd4web/patch/#folder-structure
 
 ├─ PROJECT_FOLDER    
-└── audios/    
+└── Audios/    
 ....├── AllMyAudioFiles.wav    
 ....└── AllMyAudioFiles.aif    
 └── export/    
@@ -22,10 +22,10 @@ https://charlesneimog.github.io/pd4web/patch/#folder-structure
 ........└── p5.touchgui.js    
 ....├── index.html    
 ....└── sketch.js			<- file copied from "sketch" folder    
-└── extras/		
+└── Extras/		
 ....├── extrathings.png	
 ....└── mygesture.svg	
-└── libs/	
+└── Libs/	
 ....├── pdAbstraction1.pd	
 ....└── pdAbstraction2.pd	
 └── node/	
