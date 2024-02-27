@@ -6,7 +6,7 @@ This is an attempt to use p5js as gui with pd4web
 
 ## project folder structure
 
-see pd4web doc  
+see pd4web documentation 
 https://charlesneimog.github.io/pd4web/
 
 
