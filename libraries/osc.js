@@ -1,6 +1,7 @@
 let socket = null;
 let isConnected = false;
 
+
 function sendOsc(address, value) {
   if (isConnected) {
     if (typeof value === 'boolean') {
