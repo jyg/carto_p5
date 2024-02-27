@@ -16,28 +16,28 @@ https://charlesneimog.github.io/pd4web/patch/#folder-structure
 ....├── AllMyAudioFiles.wav    
 ....└── AllMyAudioFiles.aif    
 └── export/    
-....├── assets/				<- folder copied from "sketch" folder    
+....├── assets/	...................(folder copied from "sketch" folder)   
 ....├── libraries/    
 ........├── p5.min.js    
 ........└── p5.touchgui.js    
 ....├── index.html    
-....└── sketch.js			<- file copied from "sketch" folder    
-└── Extras/		
-....├── extrathings.png	
-....└── mygesture.svg	
-└── Libs/	
-....├── pdAbstraction1.pd	
-....└── pdAbstraction2.pd	
-└── node/	
-....└── bridge.js 	 
-└── sketch/	
-....├── assets/	
-....├── libraries/	
-....├── sketch.js	
-....└── sketch.properties	
-├── main.pd					<- pd main patch	
-├── osc-bridge.pd			<- patch for "tethering" mode	
-└──	README.md				(this file)	
+....└── sketch.js	..................(file copied from "sketch" folder)    
+└── Extras/		       
+....├── extrathings.png		       
+....└── mygesture.svg		       
+└── Libs/		       
+....├── pdAbstraction1.pd		       
+....└── pdAbstraction2.pd		       
+└── node/		       
+....└── bridge.js 	 	       
+└── sketch/		       
+....├── assets/		       
+....├── libraries/		       
+....├── sketch.js		       	       
+....└── sketch.properties		       
+├── main.pd........................(pd main patch)       
+├── osc-bridge.pd	.................(patch for "tethering" mode)		       
+└──	README.md	.....................(this file)		       
 
 
 
