@@ -30,4 +30,4 @@ Transmitting values to pd4web from p5.js cannot be done from draw() loop, but ca
 * mouseDragged()
 * mouseMoved()
   
-pd4web doesn't allow to send lists from js. A workaround is to sequentially send atoms to specials receivers (see index.html and main.pd files)
+pd4web doesn't allow to send lists to puredata from js script. A workaround is to sequentially send atoms to specials receivers, with pd patch reconcatening the list (see index.html and main.pd files)
