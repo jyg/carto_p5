@@ -1,5 +1,5 @@
 # cartoP5
-p5js + puredata 
+p5js + pd4web https://github.com/charlesneimog/pd4web 
 
 ## Current status
 This is an attempt to use p5js as gui with pd4web 
@@ -11,54 +11,59 @@ This is an attempt to use p5js as gui with pd4web
 see pd4web documentation 
 https://charlesneimog.github.io/pd4web/patch/#folder-structure
 
-├─ PROJECT_FOLDER    
-└── Audios/    
-....├── AllMyAudioFiles.wav    
-....└── AllMyAudioFiles.aif    
-└── export/    
-....├── assets/	...................(folder copied from "sketch" folder)   
-....├── libraries/    
-........├── p5.min.js    
-........└── p5.touchgui.js    
-....├── index.html    
-....└── sketch.js	..................(file copied from "sketch" folder)    
-└── Extras/		       
-....├── extrathings.png		       
-....└── mygesture.svg		       
-└── Libs/		       
-....├── pdAbstraction1.pd		       
-....└── pdAbstraction2.pd		       
-└── node/		       
-....└── bridge.js 	 	       
-└── my_script/		       
-....├── assets/		       
-....├── libraries/		       
-....├── my_script.js		       	       
-....└── sketch.properties		       
-├── main.pd........................(pd main patch)       
-├── osc-bridge.pd	.................(patch for "tethering" mode)		       
-└──	README.md	.....................(this file)		       
+The main pd patch is named main.pd, and is located in root folder.        
+
+    ├─ PROJECT_FOLDER
+    └── Audios/    
+        ├── AllMyAudioFiles.wav    
+        └── AllMyAudioFiles.aif    
+    └── export/    
+        ├── assets/	          (folder copied from "my_script" folder)   
+        ├── libraries/    
+        	├── p5.min.js    
+        	└── p5.touchgui.js    
+        ├── index.html    
+        └── my_script.js      (file copied from "my_script" folder)    
+    └── Extras/		       
+        ├── extrathings.png		       
+        └── mygesture.svg		       
+    └── Libs/		       
+        ├── pdAbstraction1.pd		       
+        └── pdAbstraction2.pd		       
+    └── node/		       
+        └── bridge.js 	 	       
+    └── my_script/		       
+        ├── assets/		       
+        ├── libraries/		       
+        ├── my_script.js		       	       
+        └── sketch.properties		       
+    ├── main.pd              (pd main patch)       
+    ├── osc-bridge.pd        (patch for "tethering" mode)		       
+    └── README.md            (this file)	
+	    
+	       
 
 
 
-## develop / debug mode
-using node/bridge.js, we can transmit osc messages from processing to standalone puredata              
-the main pd patch is named main.pd, and is located in root folder           
+## develop mode
+When developping the patch, we can use processing and puredata standalone apps and make them communicate via OSC, using node/bridge.js.             
 
-* in pd standalone, opening osc-bridge.pd automatically loads main.pd
+* in pd standalone, open osc-bridge.pd for enabling OSC communication (it will automatically load main.pd patch).
 * in node folder, open a terminal and type : node bridge.js (more info : https://github.com/L05/p5.touchgui/tree/master/examples/osc)
-* from Processing4, run sketch.js project
+* from Processing4, run my_script.js project
 
-## export / embedded mode
-* copy the sketch.js file in export folder
-* Build the pd4web project using following command
-pd4web --patch main.pd  --page-folder export
+## exporting the patch and gui to webpatch/ folder
+* Copy the file my_script/my_script.js to export/ folder.
+* Copy the folder my_script/assets/ and anything it contains to export/ folder.
+* You don't have to copy my_script/libraries/'s content, unless you added to it some additional *.js files.
+* Build the pd4web project using following command :
+__pd4web --patch main.pd  --page-folder export__
 
-## bugs
+## bugs / todo
 
-Transmitting values to pd4web from p5.js cannot be done from draw() loop, but can be done from inside following functions, using sendToPureData()  :
+Check wether values cannot be transmitted to pd4web from p5.js inside draw() loop. Alternatively, it can be done inside following functions, using sendToPureData()  :
 * mousePressed()
 * mouseDragged()
 * mouseMoved()
   
-pd4web doesn't allow to send lists to puredata from js script. A workaround is to sequentially send atoms to specials receivers, with pd patch reconcatening the list (see index.html and main.pd files)
+pd4web doesn't allow to send lists to puredata from js script. A workaround is to sequentially send atoms to specials receivers, with pd patch reconcatening the list (see the script section with sendToPd() function in export/index.html and the patch in main.pd file)
