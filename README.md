@@ -11,33 +11,35 @@ This is an attempt to use p5js as gui with pd4web
 see pd4web documentation 
 https://charlesneimog.github.io/pd4web/patch/#folder-structure
 
-├─ PROJECT_FOLDER    
-└── Audios/    
-....├── AllMyAudioFiles.wav    
-....└── AllMyAudioFiles.aif    
-└── export/    
-....├── assets/	...................(folder copied from "sketch" folder)   
-....├── libraries/    
-........├── p5.min.js    
-........└── p5.touchgui.js    
-....├── index.html    
-....└── sketch.js	..................(file copied from "sketch" folder)    
-└── Extras/		       
-....├── extrathings.png		       
-....└── mygesture.svg		       
-└── Libs/		       
-....├── pdAbstraction1.pd		       
-....└── pdAbstraction2.pd		       
-└── node/		       
-....└── bridge.js 	 	       
-└── my_script/		       
-....├── assets/		       
-....├── libraries/		       
-....├── my_script.js		       	       
-....└── sketch.properties		       
-├── main.pd........................(pd main patch)       
-├── osc-bridge.pd	.................(patch for "tethering" mode)		       
-└──	README.md	.....................(this file)		       
+    ├─ PROJECT_FOLDER
+    └── Audios/    
+        ├── AllMyAudioFiles.wav    
+        └── AllMyAudioFiles.aif    
+    └── export/    
+        ├── assets/	          (folder copied from "my_script" folder)   
+        ├── libraries/    
+        ├── p5.min.js    
+        └── p5.touchgui.js    
+        ├── index.html    
+        └── my_script.js      (file copied from "my_script" folder)    
+    └── Extras/		       
+        ├── extrathings.png		       
+        └── mygesture.svg		       
+    └── Libs/		       
+        ├── pdAbstraction1.pd		       
+        └── pdAbstraction2.pd		       
+    └── node/		       
+        └── bridge.js 	 	       
+    └── my_script/		       
+        ├── assets/		       
+        ├── libraries/		       
+        ├── my_script.js		       	       
+        └── sketch.properties		       
+    ├── main.pd              (pd main patch)       
+    ├── osc-bridge.pd        (patch for "tethering" mode)		       
+    └── README.md            (this file)	
+	    
+	       
 
 
 
