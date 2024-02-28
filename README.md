@@ -30,10 +30,10 @@ https://charlesneimog.github.io/pd4web/patch/#folder-structure
 ....└── pdAbstraction2.pd		       
 └── node/		       
 ....└── bridge.js 	 	       
-└── sketch/		       
+└── my_script/		       
 ....├── assets/		       
 ....├── libraries/		       
-....├── sketch.js		       	       
+....├── my_script.js		       	       
 ....└── sketch.properties		       
 ├── main.pd........................(pd main patch)       
 ├── osc-bridge.pd	.................(patch for "tethering" mode)		       
