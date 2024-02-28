@@ -46,7 +46,7 @@ The main pd patch is named main.pd, and is located in root folder.
 
 
 ## develop mode
-When developping the patch, we can use processing and puredata standalone apps mand make them communicate via OSC, using node/bridge.js.             
+When developping the patch, we can use processing and puredata standalone apps and make them communicate via OSC, using node/bridge.js.             
 
 * in pd standalone, open osc-bridge.pd for enabling OSC communication (it will automatically load main.pd patch).
 * in node folder, open a terminal and type : node bridge.js (more info : https://github.com/L05/p5.touchgui/tree/master/examples/osc)
