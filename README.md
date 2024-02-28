@@ -1,5 +1,5 @@
 # cartoP5
-p5js + puredata 
+p5js + pd4web https://github.com/charlesneimog/pd4web 
 
 ## Current status
 This is an attempt to use p5js as gui with pd4web 
