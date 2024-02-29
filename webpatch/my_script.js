@@ -48,7 +48,7 @@ function setup()    {
     let newPresetButton;
     for (let i = 0; i < nbOfButtons ; i++){
         newPresetButton = createButton("p"+ i);
-        newPresetButton.position(0, gridY *(i+1));
+        newPresetButton.position(0, gridY *(i+3));
         newPresetButton.size(gridX*2, gridY);
         newPresetButton.mouseClicked(() => {
             table = loadTable('assets/spots'+i+'.csv', 'csv','header',populateSpots)
@@ -73,6 +73,7 @@ function setup()    {
     inp.position(gridX*4, 0);
     inp.input(false);
     
+    createSpan("What's your name? "); //label for entry1
     selectSound = createSelect();
     selectSound.position(gridX*12.5, 0);
     
@@ -81,6 +82,10 @@ function setup()    {
     selectSound.option('son2');
     selectSound.option('son3');
     selectSound.option('son4');
+    
+    selectSound.mouseReleased(() => {
+        createNewSpot();
+    });
     
       // Set the selected option to "red".
     //  mySelect.selected('red');
@@ -128,7 +133,7 @@ function windowResized() {
     
     // resize preset buttons
     for (let i = 0; i < presetButtons.length ; i++){
-          presetButtons[i].position(0, gridY *(i+1));
+          presetButtons[i].position(0, gridY *(i+3));
           presetButtons[i].size(gridX*2, gridY);
     }
     
@@ -219,8 +224,13 @@ function mousePressed() {
             return;        
             }
         }
-    updatePlayer();   
+    updatePlayer();
+    return false;
 }
+  
+document.addEventListener('gesturestart', function(e) {
+  e.preventDefault();
+});  
   
 function populateSpots(){
     // delete all existing rows in spots table
@@ -278,3 +288,5 @@ function createNewSpot(){
     spots.push(new Soundspot(currentId, 0.5, 0.5, 1, selectSound.selected()));
     sendToPd('addObject', [currentId, spots[i].x, spots[i].y, spots[i].size, spots[i].label]);        
  }
+ 
+ 
