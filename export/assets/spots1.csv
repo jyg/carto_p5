@@ -1,3 +1,3 @@
 type,x,y,size,label
-sound,100,100,20,jean
-sound,120,140,30,paul
+sound,0.4,0.6,1.4,jean
+sound,0.5,0.7,0.8,paul
