@@ -42,25 +42,37 @@
         let selectSound;
         
         function setup()    {
-          
-                createExportTable();
-                     
-                createCanvas(sizeX, sizeY);
-                frameRate(10);
-                
-                // Create GUI
-               // gui = createGui();
-                
+            createCanvas(sizeX, sizeY);
+            frameRate(10);
+                              
                 // only for osc bridge mode
                 setupOscBridge();
   
                 // Create preset buttons
-       //         for (let i = 0; i < nbOfButtons ; i++){
-         //         presetButtons.push(createButton("p"+ i,0, gridY *(i+1), gridX*2, gridY));
-           //     }
+                let newPresetButton;
+                for (let i = 0; i < nbOfButtons ; i++){
+                  newPresetButton = createButton("p"+ i);
+                  newPresetButton.position(0, gridY *(i+1));
+                  newPresetButton.size(gridX*2, gridY);
+                      newPresetButton.mouseClicked(() => {
+                      //print(presetButtons[i].label + " is pressed."); 
+                      sendToPd('deleteAll','');
+                      table = loadTable('assets/spots'+i+'.csv', 'csv','header',populateSpots)
+                  });
+                  presetButtons.push(newPresetButton);
+                }
                 
-          //      saveButton = createButton("export", gridX*2,0,gridX*2,gridY); 
-            //    newSpotButton = createButton("<-ajouter", gridX*15.5,0,gridX * 4,gridY); 
+                // create Export button
+                saveButton = createButton("export"); 
+                saveButton.size(gridX*2,gridY);
+                saveButton.position(gridX*2,0);
+                saveButton.mouseClicked(exportData);
+                
+                // Create newSpotButton
+                newSpotButton = createButton("<-ajouter");
+                newSpotButton.position(gridX*15.5,0);
+                newSpotButton.size(gridX * 4,gridY);
+                newSpotButton.mouseClicked(createNewSpot);
                 
                 // input fields
                 inp = createInput('');
@@ -102,35 +114,8 @@
                 fill (200,0,0);
                 circle(player_x, player_y, gridX/4);
                 
-                // GUI - check if buttons are pressed
-        //        for (let i = 0;i<presetButtons.length;i++){
-          //        if (presetButtons[i].isPressed){
-            //        //print(presetButtons[i].label + " is pressed."); 
-              //      sendToPd('deleteAll','');
-                    
-          //          table = loadTable('assets/spots'+i+'.csv', 'csv','header',populateSpots)
-            //      }
-         //       }
-                // other buttons
-           //     if (saveButton.isPressed){
-             //     tableExport.clearRows();
-           //       for(let i = 0 ; i < spots.length ; i++){
-             //       let newRow = tableExport.addRow();
-               //     newRow.setNum('x', spots[i].x);
-             //       newRow.setNum('y', spots[i].y);
-            //        newRow.setNum('size', spots[i].size);
-              //      newRow.setString('label', spots[i].label);
-                    
-             //     }
-            //      saveTable(tableExport, 'tableExport.csv');
-           //     }
-                // newSpotButton
-         //       if (newSpotButton.isPressed){
-           //         let i = spots.length; 
-             //       currentId+=1;
-            //        spots.push(new Soundspot(currentId, gridX*10, gridY*10, gridX, selectSound.selected()));
-            //        sendToPd('addObject', [currentId, spots[i].x, spots[i].y, spots[i].size, spots[i].label]);
-           //     }
+        
+           
                 
         }
                 
@@ -191,6 +176,7 @@
               spots[selectedSpot].selected = 0;
           selectedSpot = -1;
         }
+        
         function mousePressed() {
            selectedSpot = -1;
            for (let i = 0; i < spots.length; i++) {
@@ -201,10 +187,8 @@
                 }
            updatePlayer();
            
-           }
-        
-        
-        
+        }
+          
         function populateSpots(){
       
           //count the columns
@@ -213,9 +197,13 @@
         
           spots.splice(0,99);
           for (let i = 0; i < table.getRowCount(); i++) {
-
-            spots.push(new Soundspot(i, table.getNum(i,'x'), table.getNum(i,'y'), table.getNum(i,'size'),table.getString(i,'label')));
-            
+            let type = table.getString(i,'type');
+            if(type == 'sound'){
+                spots.push(new Soundspot(i, table.getNum(i,'x'), table.getNum(i,'y'), table.getNum(i,'size'),table.getString(i,'label')));
+            }
+            else if (type == 'point'){
+            // import point data here
+            }
           }
           currentId=table.getRowCount()-1;
           // send to pd
@@ -232,12 +220,30 @@
              sendToPd('cursor', [mouseX, mouseY]);
          }
         }
-        
-        function createExportTable(){
-          tableExport = new p5.Table();
-          tableExport.addColumn('id');
-          tableExport.addColumn('x');
-          tableExport.addColumn('y');
-          tableExport.addColumn('size');
-          tableExport.addColumn('label');
-          }
+          
+        function exportData(){
+            let tableExport = new p5.Table();
+            tableExport.addColumn('type');
+            tableExport.addColumn('x');
+            tableExport.addColumn('y');
+            tableExport.addColumn('size');
+            tableExport.addColumn('label');
+            
+            // copy all soundspot data
+            for(let i = 0 ; i < spots.length ; i++){
+                let newRow = tableExport.addRow();
+                newRow.setString('type', 'sound');
+                newRow.setNum('x', spots[i].x);
+                newRow.setNum('y', spots[i].y);
+                newRow.setNum('size', spots[i].size);
+                newRow.setString('label', spots[i].label);
+            }
+            saveTable(tableExport, 'tableExport.csv');
+        }
+         
+        function createNewSpot(){
+            let i = spots.length; 
+            currentId+=1;
+            spots.push(new Soundspot(currentId, gridX*10, gridY*10, gridX, selectSound.selected()));
+            sendToPd('addObject', [currentId, spots[i].x, spots[i].y, spots[i].size, spots[i].label]);        
+         }

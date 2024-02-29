@@ -1,3 +1,3 @@
-id,x,y,size,label
-0,100,100,20,jean
-1,120,140,30,paul
+type,x,y,size,label
+sound,100,100,20,jean
+sound,120,140,30,paul

@@ -13,7 +13,7 @@
 #X obj 437 115 s pd-main.pd;
 #X text 548 153 <- your main patch;
 #X obj 177 221 print debug;
-#X obj 434 149 pd/main;
+#X obj 434 149 main;
 #X connect 0 0 1 0;
 #X connect 1 0 2 0;
 #X connect 1 0 6 0;
