@@ -49,18 +49,18 @@
                 frameRate(10);
                 
                 // Create GUI
-                gui = createGui();
+               // gui = createGui();
                 
                 // only for osc bridge mode
                 setupOscBridge();
   
                 // Create preset buttons
-                for (let i = 0; i < nbOfButtons ; i++){
-                  presetButtons.push(createButton("p"+ i,0, gridY *(i+1), gridX*2, gridY));
-                }
+       //         for (let i = 0; i < nbOfButtons ; i++){
+         //         presetButtons.push(createButton("p"+ i,0, gridY *(i+1), gridX*2, gridY));
+           //     }
                 
-                saveButton = createButton("export", gridX*2,0,gridX*2,gridY); 
-                newSpotButton = createButton("<-ajouter", gridX*15.5,0,gridX * 4,gridY); 
+          //      saveButton = createButton("export", gridX*2,0,gridX*2,gridY); 
+            //    newSpotButton = createButton("<-ajouter", gridX*15.5,0,gridX * 4,gridY); 
                 
                 // input fields
                 inp = createInput('');
@@ -90,7 +90,7 @@
                 rect(gridX*3,gridY*2, width*0.8,height*0.8);
                 
                 // draw gui
-                drawGui();
+        //        drawGui();
                 
                 // draw tokens
                 for (let i = 0; i < spots.length; i++) {
@@ -103,34 +103,34 @@
                 circle(player_x, player_y, gridX/4);
                 
                 // GUI - check if buttons are pressed
-                for (let i = 0;i<presetButtons.length;i++){
-                  if (presetButtons[i].isPressed){
-                    //print(presetButtons[i].label + " is pressed."); 
-                    sendToPd('deleteAll','');
+        //        for (let i = 0;i<presetButtons.length;i++){
+          //        if (presetButtons[i].isPressed){
+            //        //print(presetButtons[i].label + " is pressed."); 
+              //      sendToPd('deleteAll','');
                     
-                    table = loadTable('assets/spots'+i+'.csv', 'csv','header',populateSpots)
-                  }
-                }
+          //          table = loadTable('assets/spots'+i+'.csv', 'csv','header',populateSpots)
+            //      }
+         //       }
                 // other buttons
-                if (saveButton.isPressed){
-                  tableExport.clearRows();
-                  for(let i = 0 ; i < spots.length ; i++){
-                    let newRow = tableExport.addRow();
-                    newRow.setNum('x', spots[i].x);
-                    newRow.setNum('y', spots[i].y);
-                    newRow.setNum('size', spots[i].size);
-                    newRow.setString('label', spots[i].label);
+           //     if (saveButton.isPressed){
+             //     tableExport.clearRows();
+           //       for(let i = 0 ; i < spots.length ; i++){
+             //       let newRow = tableExport.addRow();
+               //     newRow.setNum('x', spots[i].x);
+             //       newRow.setNum('y', spots[i].y);
+            //        newRow.setNum('size', spots[i].size);
+              //      newRow.setString('label', spots[i].label);
                     
-                  }
-                  saveTable(tableExport, 'tableExport.csv');
-                }
+             //     }
+            //      saveTable(tableExport, 'tableExport.csv');
+           //     }
                 // newSpotButton
-                if (newSpotButton.isPressed){
-                    let i = spots.length; 
-                    currentId+=1;
-                    spots.push(new Soundspot(currentId, gridX*10, gridY*10, gridX, selectSound.selected()));
-                    sendToPd('addObject', [currentId, spots[i].x, spots[i].y, spots[i].size, spots[i].label]);
-                }
+         //       if (newSpotButton.isPressed){
+           //         let i = spots.length; 
+             //       currentId+=1;
+            //        spots.push(new Soundspot(currentId, gridX*10, gridY*10, gridX, selectSound.selected()));
+            //        sendToPd('addObject', [currentId, spots[i].x, spots[i].y, spots[i].size, spots[i].label]);
+           //     }
                 
         }
                 
