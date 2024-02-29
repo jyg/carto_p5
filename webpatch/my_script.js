@@ -225,12 +225,12 @@ function mousePressed() {
             }
         }
     updatePlayer();
-    return false;
+    // return false;
 }
   
-document.addEventListener('gesturestart', function(e) {
+ document.addEventListener('gesturestart', function(e) {
   e.preventDefault();
-});  
+ });  
   
 function populateSpots(){
     // delete all existing rows in spots table
