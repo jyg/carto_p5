@@ -233,15 +233,21 @@ function mouseReleased(){
 
 function mousePressed() {
     selectedSpot = -1;
-    let returnValue = !((mouseX > leftMargin)&&(mouseY > topMargin));
+    let returnFalse = ((mouseX > leftMargin)&&(mouseY > topMargin));
     for (let i = 0; i < spots.length; i++) {
         if(spots[i].checkMouse()){
             selectedSpot = i;
-            return returnValue;        
+            if (returnFalse) 
+                return false;
+            else
+                return;       
             }
         }
     updatePlayer();
-    return returnValue;
+    if (returnFalse) 
+        return false;
+    else
+        return; 
 }
   
  document.addEventListener('gesturestart', function(e) {
