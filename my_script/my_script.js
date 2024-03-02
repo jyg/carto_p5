@@ -237,15 +237,12 @@ function mousePressed() {
     for (let i = 0; i < spots.length; i++) {
         if(spots[i].checkMouse()){
             selectedSpot = i;
-            if (returnFalse) 
-                return false;
-            else
-                return;       
+            return false;     // do this prevent default touch interaction
             }
         }
     updatePlayer();
     if (returnFalse) 
-        return false;
+        return false;    // do this prevent default touch interaction
     else
         return; 
 }
