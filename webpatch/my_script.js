@@ -77,26 +77,26 @@ function setup()    {
     newSpotButton.mouseClicked(createNewSpot);
     
     // input fields
-    inp = createInput('');
+    inp = createInput('taper le nom d\'un son');
     inp.position(gridX*4, 0);
-    inp.input(false);
+    //inp.input(false);
     
-    createSpan("What's your name? "); //label for entry1
-    selectSound = createSelect();
-    selectSound.position(gridX*12.5, 0);
+    //createSpan("What's your name? "); //label for entry1
+    //selectSound = createSelect();
+    //selectSound.position(gridX*12.5, 0);
     
     // Add color options.
-    selectSound.option('piano1_Juliette_1');
-    selectSound.option('piano1_Juliette_2');
-    selectSound.option('piano1_Juliette_3');
-    selectSound.option('piano1_Juliette_4');
-    selectSound.option('piano1_Juliette_5');
-    selectSound.option('piano1_Juliette_6');
-    selectSound.option('piano1_Juliette_7');
+    //selectSound.option('piano1_Juliette_1');
+    //selectSound.option('piano1_Juliette_2');
+    //selectSound.option('piano1_Juliette_3');
+    //selectSound.option('piano1_Juliette_4');
+    //selectSound.option('piano1_Juliette_5');
+    //selectSound.option('piano1_Juliette_6');
+    //selectSound.option('piano1_Juliette_7');
     
-    selectSound.mouseReleased(() => {
-        createNewSpot();
-    });
+    //selectSound.mouseReleased(() => {
+    //    createNewSpot();
+    //});
     
       // Set the selected option to "red".
     //  mySelect.selected('red');
@@ -124,7 +124,7 @@ function draw()
     
     // draw listener (mouse) position
     fill (200,0,0);
-    circle(player_x, player_y, gridX/4,gridY/4);
+    ellipse(player_x, player_y, gridX/4,gridY/4);
 }
   
 function windowResized() {
@@ -162,7 +162,7 @@ function windowResized() {
     inp.position(gridX*4, 0);
 
     // resize popup menu
-    selectSound.position(gridX*12.5, 0);   
+    //selectSound.position(gridX*12.5, 0);   
 }
         
     // Soundspot class
@@ -240,7 +240,8 @@ function mousePressed() {
             }
         }
     updatePlayer();
-    // return false;
+    if (mouseY > topMargin)
+      return false;
 }
   
  document.addEventListener('gesturestart', function(e) {
@@ -304,7 +305,7 @@ function exportData(){
 function createNewSpot(){
     let i = spots.length; 
     currentId+=1;
-    spots.push(new Soundspot(currentId, 0.5, 0.5, 1, selectSound.selected()));
+    spots.push(new Soundspot(currentId, 0.5, 0.5, 1, inp.value()));
     sendToPd('addObject', [currentId, spots[i].x, spots[i].y, spots[i].size, spots[i].label]);        
  }
  
