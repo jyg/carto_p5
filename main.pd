@@ -40,12 +40,14 @@
 #X obj 229 339 poly 4 1;
 #X msg 327 524 all remove;
 #X obj 226 608 clone -s 1 Libs/soundspot 4;
+#X obj 759 298 print cursor;
 #X connect 0 0 7 0;
 #X connect 1 0 16 0;
 #X connect 2 0 10 0;
 #X connect 2 0 21 0;
 #X connect 2 0 39 0;
 #X connect 3 0 25 0;
+#X connect 4 0 41 0;
 #X connect 5 0 38 0;
 #X connect 6 0 26 0;
 #X connect 7 0 14 0;
