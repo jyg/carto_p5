@@ -1,3 +1,5 @@
+let webgl = false;
+
 // soundSpot global variables
 let spots = []; // array of sound objects
 let selectedSpot = -1;
@@ -38,8 +40,14 @@ let inp;
 let selectSound;
 
 function setup()    {
-    createCanvas(sizeX, sizeY);
-    frameRate(10);
+    if (webgl){
+        createCanvas(sizeX, sizeY, WEBGL);
+    }
+    else {
+        createCanvas(sizeX, sizeY);
+    }
+      
+    //frameRate(10);
                   
     // only for osc bridge mode
     setupOscBridge();
@@ -78,10 +86,13 @@ function setup()    {
     selectSound.position(gridX*12.5, 0);
     
     // Add color options.
-    selectSound.option('son1');
-    selectSound.option('son2');
-    selectSound.option('son3');
-    selectSound.option('son4');
+    selectSound.option('piano1_Juliette_1');
+    selectSound.option('piano1_Juliette_2');
+    selectSound.option('piano1_Juliette_3');
+    selectSound.option('piano1_Juliette_4');
+    selectSound.option('piano1_Juliette_5');
+    selectSound.option('piano1_Juliette_6');
+    selectSound.option('piano1_Juliette_7');
     
     selectSound.mouseReleased(() => {
         createNewSpot();
@@ -98,7 +109,9 @@ function draw()
     background(200);
     
     // only for webgl    
-    //translate(-width/2,-height/2);
+    if (webgl){
+        translate(-sizeX/2,-sizeY/2);
+    }
     
     // scene rectangle TODO : use variables for margins
     fill(240);
@@ -111,7 +124,7 @@ function draw()
     
     // draw listener (mouse) position
     fill (200,0,0);
-    circle(player_x, player_y, gridX/4);
+    circle(player_x, player_y, gridX/4,gridY/4);
 }
   
 function windowResized() {
@@ -171,15 +184,17 @@ class Soundspot {
     }
 
     display() {
-      if (this.selected){
-        fill(100);
-      }
-      else
-        fill (240);
-      ellipse(leftMargin + this.x * canvasWidth, topMargin + this.y * canvasHeight, this.size * gridX, this.size * gridY);
-      fill (0);
-      text(this.label, leftMargin + this.x * canvasWidth -gridX, topMargin + this.y * canvasHeight - gridY*0.5);
-    }
+        if (this.selected){
+            fill(100);
+        }
+        else
+            fill (240);
+        ellipse(leftMargin + this.x * canvasWidth, topMargin + this.y * canvasHeight, this.size * gridX, this.size * gridY);
+        fill (0);
+        text(this.label, leftMargin + this.x * canvasWidth -gridX, topMargin + this.y * canvasHeight - gridY*0.5);
+
+
+  }
     
     checkMouse(){
         let distX = (leftMargin + this.x * canvasWidth - mouseX)/gridX/this.size;
@@ -225,12 +240,12 @@ function mousePressed() {
             }
         }
     updatePlayer();
-    return false;
+    // return false;
 }
   
-document.addEventListener('gesturestart', function(e) {
+ document.addEventListener('gesturestart', function(e) {
   e.preventDefault();
-});  
+ });  
   
 function populateSpots(){
     // delete all existing rows in spots table
@@ -255,10 +270,14 @@ function populateSpots(){
 }
 
 function updatePlayer(){
-    if ((selectedSpot == -1)&&(mouseX > 3*gridX)&&(mouseY > 2*gridY)&&(mouseX<(width-gridX))&&(mouseY<(height-2*gridY))){
-           player_x = mouseX;
-           player_y = mouseY;
-           sendToPd('cursor', [mouseX, mouseY]);
+    if ((selectedSpot == -1)){
+        let _x = (mouseX-leftMargin)/canvasWidth;
+        let _y = (mouseY-topMargin)/canvasHeight;
+        if ((_x > 0 )&& (_x < 1) && (_y > 0) && (_y < 1)){
+            player_x = mouseX;
+            player_y = mouseY;
+            sendToPd('cursor', [_x,_y]);         
+            }         
     }
 }
   

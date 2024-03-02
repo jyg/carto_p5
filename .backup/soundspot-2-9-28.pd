@@ -32,6 +32,7 @@
 #X obj 54 187 t f f f;
 #X obj 173 210 t f f f;
 #X msg 398 129 read -resize ../Audios/\$1.wav \$2-wav;
+#X listbox 381 40 20 0 0 0 - - - 0;
 #X connect 0 0 5 0;
 #X connect 2 0 14 0;
 #X connect 3 0 30 0;
@@ -39,6 +40,7 @@
 #X connect 5 0 2 0;
 #X connect 5 0 21 0;
 #X connect 5 0 3 0;
+#X connect 5 0 33 0;
 #X connect 5 1 3 0;
 #X connect 5 2 6 0;
 #X connect 6 0 14 0;

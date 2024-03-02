@@ -1,3 +1,5 @@
 type,x,y,size,label
-sound,0.1,0.2,1,thomas
-sound,0.2,0.3,1,germain
+sound,0.3097107438016529,0.32867981790591805,1,piano1_Juliette_5
+sound,0.4379820936639119,0.560091047040971,1,piano1_Juliette_3
+sound,0.45950413223140496,0.29264036418816386,1,piano1_Juliette_3
+sound,0.5,0.5,1,piano1_Juliette_7

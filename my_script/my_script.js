@@ -86,10 +86,13 @@ function setup()    {
     selectSound.position(gridX*12.5, 0);
     
     // Add color options.
-    selectSound.option('son1');
-    selectSound.option('son2');
-    selectSound.option('son3');
-    selectSound.option('son4');
+    selectSound.option('piano1_Juliette_1');
+    selectSound.option('piano1_Juliette_2');
+    selectSound.option('piano1_Juliette_3');
+    selectSound.option('piano1_Juliette_4');
+    selectSound.option('piano1_Juliette_5');
+    selectSound.option('piano1_Juliette_6');
+    selectSound.option('piano1_Juliette_7');
     
     selectSound.mouseReleased(() => {
         createNewSpot();
@@ -181,13 +184,17 @@ class Soundspot {
     }
 
     display() {
-      if (this.selected){
-        fill(100);
-      }
-      else
-        fill (240);
-      ellipse(leftMargin + this.x * canvasWidth, topMargin + this.y * canvasHeight, this.size * gridX, this.size * gridY);
-    }
+        if (this.selected){
+            fill(100);
+        }
+        else
+            fill (240);
+        ellipse(leftMargin + this.x * canvasWidth, topMargin + this.y * canvasHeight, this.size * gridX, this.size * gridY);
+        fill (0);
+        text(this.label, leftMargin + this.x * canvasWidth -gridX, topMargin + this.y * canvasHeight - gridY*0.5);
+
+
+  }
     
     checkMouse(){
         let distX = (leftMargin + this.x * canvasWidth - mouseX)/gridX/this.size;
