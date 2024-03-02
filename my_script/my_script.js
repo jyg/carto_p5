@@ -264,9 +264,13 @@ function populateSpots(){
 
 function updatePlayer(){
     if ((selectedSpot == -1)){
-           player_x = mouseX;
-           player_y = mouseY;
-           sendToPd('cursor', [(mouseX-leftMargin)/canvasWidth, (mouseY-topMargin)/canvasHeight]);
+        let _x = (mouseX-leftMargin)/canvasWidth;
+        let _y = (mouseY-topMargin)/canvasHeight;
+        if ((_x > 0 )&& (_x < 1) && (_y > 0) && (_y < 1)){
+            player_x = mouseX;
+            player_y = mouseY;
+            sendToPd('cursor', [_x,_y]);         
+            }         
     }
 }
   
