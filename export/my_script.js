@@ -28,6 +28,7 @@ let nbOfButtons = 2;
 // control buttons
 let saveButton;
 let newSpotButton;
+let fullscreenButton; 
 
 // input field and dropdown menu
 let inp;
@@ -67,19 +68,19 @@ function setup()    {
     
     // create Export button
     saveButton = createButton("export"); 
-    saveButton.size(gridX*2,gridY);
-    saveButton.position(gridX*2,0);
     saveButton.mouseClicked(exportData);
     
     // Create newSpotButton
     newSpotButton = createButton("<-ajouter");
-    newSpotButton.position(gridX*15.5,0);
-    newSpotButton.size(gridX * 4,gridY);
     newSpotButton.mouseClicked(createNewSpot);
+    
+    fullscreenButton = createButton("Fullscreen"); 
+    fullscreenButton.mousePressed(() => {
+        let fs = fullscreen();
+        fullscreen(!fs);  });
     
     // input fields
     inp = createInput('taper le nom d\'un son');
-    inp.position(gridX*4, 0);
     //inp.input(false);
     
     //createSpan("What's your name? "); //label for entry1
@@ -101,7 +102,8 @@ function setup()    {
     
       // Set the selected option to "red".
     //  mySelect.selected('red');
-     
+    
+    windowResized() 
 }
 
 function draw()
@@ -152,15 +154,19 @@ function windowResized() {
     }
     
     //resize saveButton
-    saveButton.size(gridX*2,gridY);
-    saveButton.position(gridX*2,0);
+    saveButton.size(gridX * 2 , gridY);
+    saveButton.position(gridX * 2, 12);
     
     // resize  newSpotButton
-    newSpotButton.position(gridX*15.5,0);
-    newSpotButton.size(gridX * 4,gridY);
+    newSpotButton.size(gridX * 2 , gridY);
+    newSpotButton.position(gridX * 8, 12);
+    
+    
+    fullscreenButton.size(gridX * 2 , gridY);
+    fullscreenButton.position(gridX * 12, 12);
     
     // resize textfield (inp)
-    inp.position(gridX*4, 0);
+    inp.position(gridX * 4 , 12);
 
     // resize popup menu
     //selectSound.position(gridX*12.5, 0);   
