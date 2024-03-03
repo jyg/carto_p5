@@ -41,7 +41,8 @@ function preload() {
 function setup()    {
     if (webgl){
         createCanvas(sizeX, sizeY, WEBGL);
-        textFont(font, 12);
+        textFont(font);
+        textSize(12);
     }
     else {
         createCanvas(sizeX, sizeY);
