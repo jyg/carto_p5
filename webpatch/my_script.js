@@ -1,5 +1,5 @@
 let webgl = true;
-let fontLoaded = false;
+let font;
 // soundSpot global variables
 let spots = []; // array of sound objects
 let selectedSpot = -1;
@@ -11,12 +11,6 @@ let table;
 let player_x = 0;
 let player_y = 0;
 
-function preload() {
-    //the table is comma separated value "csv"
-    //and has an header specifying the columns labels
-
-    //table = loadTable('assets/spots1.csv', 'csv', 'header');
-}
 
 let sizeX = window.innerWidth - 20;
 let sizeY = window.innerHeight - 20;
@@ -39,19 +33,18 @@ let newSpotButton;
 let inp;
 let selectSound;
 
-function drawText(font) {
-  fontLoaded = true;
-  textFont(font, 12);
+function preload() {
+    font = loadFont('FluxischElse-Regular.otf');
 }
+
 
 function setup()    {
     if (webgl){
         createCanvas(sizeX, sizeY, WEBGL);
-        loadFont('FluxischElse-Regular.otf', drawText);
+        textFont(font, 12);
     }
     else {
         createCanvas(sizeX, sizeY);
-        fontLoaded = true;
     }
       
     //frameRate(10);
@@ -198,8 +191,7 @@ class Soundspot {
             fill (240);
         ellipse(leftMargin + this.x * canvasWidth, topMargin + this.y * canvasHeight, this.size * gridX, this.size * gridY);
         fill (0);
-        if (fontLoaded)
-            text(this.label, leftMargin + this.x * canvasWidth -gridX, topMargin + this.y * canvasHeight - gridY*0.7);
+        text(this.label, leftMargin + this.x * canvasWidth -gridX, topMargin + this.y * canvasHeight - gridY*0.7);
  }
     
     checkMouse(){
