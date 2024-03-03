@@ -1,4 +1,4 @@
-let webgl = false;
+let webgl = true;
 
 // soundSpot global variables
 let spots = []; // array of sound objects
