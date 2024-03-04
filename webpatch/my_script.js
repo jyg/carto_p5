@@ -8,6 +8,8 @@ let currentId = 0;
 let msg;    //   ?
 let table;
 
+let url = 'http://s184785159.onlinehome.fr/carto/mail.php';  // for posting table
+
 let player_x = 0;
 let player_y = 0;
 
@@ -26,6 +28,7 @@ let presetButtons = [];
 let nbOfButtons = 2;
 
 // control buttons
+let clearButton;
 let saveButton;
 let newSpotButton;
 let fullscreenButton; 
@@ -35,7 +38,7 @@ let inp;
 let selectSound;
 
 function preload() {
-    font = loadFont('FluxischElse-Regular.otf');
+    font = loadFont('KronaOne-Regular.ttf');
 }
 
 
@@ -43,7 +46,7 @@ function setup()    {
     if (webgl){
         createCanvas(sizeX, sizeY, WEBGL);
         textFont(font);
-        textSize(12);
+        textSize(10);
     }
     else {
         createCanvas(sizeX, sizeY);
@@ -66,42 +69,41 @@ function setup()    {
         presetButtons.push(newPresetButton);
     }
     
+    // create clear button
+    clearButton = createButton("effacer");
+    //clearButton.mouseClicked(clearAll);
     // create Export button
-    saveButton = createButton("export"); 
+    saveButton = createButton("exporter"); 
     saveButton.mouseClicked(exportData);
     
     // Create newSpotButton
-    newSpotButton = createButton("<-ajouter");
+    newSpotButton = createButton("+");
     newSpotButton.mouseClicked(createNewSpot);
     
-    fullscreenButton = createButton("Fullscreen"); 
+    fullscreenButton = createButton("Plein Ecran"); 
     fullscreenButton.mousePressed(() => {
         let fs = fullscreen();
         fullscreen(!fs);  });
     
     // input fields
-    inp = createInput('taper le nom d\'un son');
-    //inp.input(false);
+    inp = createInput('Prénom - Titre');
     
-    //createSpan("What's your name? "); //label for entry1
-    //selectSound = createSelect();
-    //selectSound.position(gridX*12.5, 0);
-    
-    // Add color options.
-    //selectSound.option('piano1_Juliette_1');
-    //selectSound.option('piano1_Juliette_2');
-    //selectSound.option('piano1_Juliette_3');
-    //selectSound.option('piano1_Juliette_4');
-    //selectSound.option('piano1_Juliette_5');
-    //selectSound.option('piano1_Juliette_6');
-    //selectSound.option('piano1_Juliette_7');
-    
-    //selectSound.mouseReleased(() => {
-    //    createNewSpot();
-    //});
-    
-      // Set the selected option to "red".
-    //  mySelect.selected('red');
+    selectSound = createSelect();
+    selectSound.option('piano1_Juliette_1');
+    selectSound.option('piano1_Juliette_2');
+    selectSound.option('piano1_Juliette_3');
+    selectSound.option('piano1_Juliette_4');
+    selectSound.option('piano1_Juliette_5');
+    selectSound.option('piano1_Juliette_6');
+    selectSound.option('piano1_Juliette_7');
+    selectSound.option('piano2_Helene_1');
+    selectSound.option('piano2_Helene_2');
+    selectSound.option('piano2_Helene_3');
+    selectSound.option('piano2_Helene_4');
+    selectSound.option('piano2_Helene_5');
+    selectSound.option('piano2_Helene_6');
+    selectSound.option('piano2_Helene_7');
+    selectSound.option('guitare1_Arthur1');
     
     windowResized() 
 }
@@ -153,23 +155,27 @@ function windowResized() {
           presetButtons[i].size(gridX*2, gridY);
     }
     
+    // resize clearButton
+    clearButton.size(gridX , gridY);
+    clearButton.position(0, 0);
     //resize saveButton
     saveButton.size(gridX * 2 , gridY);
-    saveButton.position(gridX * 2, 12);
+    saveButton.position(gridX *23, 0);
     
     // resize  newSpotButton
     newSpotButton.size(gridX * 2 , gridY);
-    newSpotButton.position(gridX * 8, 12);
+    newSpotButton.position(gridX * 8, 0);
     
     
     fullscreenButton.size(gridX * 2 , gridY);
-    fullscreenButton.position(gridX * 12, 12);
+    fullscreenButton.position(gridX * 12, 0);
     
     // resize textfield (inp)
-    inp.position(gridX * 4 , 12);
-
+    inp.position(gridX *19.5 , 0);
+    inp.size(gridX * 3, gridY);
     // resize popup menu
-    //selectSound.position(gridX*12.5, 0);   
+    selectSound.position(gridX * 3, 0);
+    selectSound.size(gridX*4,gridY);
 }
         
     // Soundspot class
@@ -198,7 +204,10 @@ class Soundspot {
             fill (240);
         ellipse(leftMargin + this.x * canvasWidth, topMargin + this.y * canvasHeight, this.size * gridX, this.size * gridY);
         fill (0);
+        push();
+        translate(0,0,1);  // make text appear in front
         text(this.label, leftMargin + this.x * canvasWidth -gridX, topMargin + this.y * canvasHeight - gridY*0.7);
+        pop();
  }
     
     checkMouse(){
@@ -307,13 +316,48 @@ function exportData(){
         newRow.setNum('size', spots[i].size);
         newRow.setString('label', spots[i].label);
     }
-    saveTable(tableExport, 'tableExport.csv');
+    
+    let tableString = '';
+    // Iterate over rows
+    for (let i = 0; i < tableExport.getRowCount(); i++) {
+        // Iterate over columns
+        for (let j = 0; j < tableExport.getColumnCount(); j++) {
+            // Append cell value to the string
+            tableString += tableExport.getString(i, j) + ',';
+        }
+        // Append newline after each row
+        tableString += '\n';
+    }
+    // Print the resulting string
+    console.log(tableString);
+    sendEmail(tableString);
+//    saveTable(tableExport, 'tableExport.csv');
 }
- 
+
+async function sendEmail(_message) {
+    const data = {
+        to: 'jyg@gumo.fr',
+        subject: 'Cartographie de ' + inp.value(),
+        message: _message
+    };
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams(data),
+    });
+
+    const result = await response.text();
+    
+    // la page html renvoyée par le script php
+    console.log(result);
+}
+
 function createNewSpot(){
     let i = spots.length; 
     currentId+=1;
-    spots.push(new Soundspot(currentId, 0.5, 0.5, 1, inp.value()));
+    spots.push(new Soundspot(currentId, 0.5, 0.5, 1, selectSound.value()));
     sendToPd('addObject', [currentId, spots[i].x, spots[i].y, spots[i].size, spots[i].label]);        
  }
  
