@@ -70,10 +70,10 @@ function setup()    {
     }
     
     // create clear button
-    clearButton = createButton("effacer");
+    clearButton = createButton("Poubelle");
     //clearButton.mouseClicked(clearAll);
     // create Export button
-    saveButton = createButton("exporter"); 
+    saveButton = createButton("Envoyer ma \n Composition"); 
     saveButton.mouseClicked(exportData);
     
     // Create newSpotButton
@@ -156,11 +156,11 @@ function windowResized() {
     }
     
     // resize clearButton
-    clearButton.size(gridX , gridY);
-    clearButton.position(0, 0);
+    clearButton.size(2 * gridX , gridY);
+    clearButton.position(0, topMargin + canvasHeight + 2 * gridY);
     //resize saveButton
-    saveButton.size(gridX * 2 , gridY);
-    saveButton.position(gridX *23, 0);
+    saveButton.size(gridX * 2 , 2 * gridY);
+    saveButton.position(leftMargin + canvasWidth, 0);
     
     // resize  newSpotButton
     newSpotButton.size(gridX * 2 , gridY);
@@ -168,7 +168,7 @@ function windowResized() {
     
     
     fullscreenButton.size(gridX * 2 , gridY);
-    fullscreenButton.position(gridX * 12, 0);
+    fullscreenButton.position(leftMargin + canvasWidth, topMargin + canvasHeight + 2 * gridY);
     
     // resize textfield (inp)
     inp.position(gridX *19.5 , 0);
@@ -234,7 +234,7 @@ function mouseDragged() {
 
 function mouseReleased(){
     if(selectedSpot>-1){
-        if ((mouseX< 2 * gridX)&&(mouseY<gridY)){
+        if ((mouseX < 2 * gridX)&&(mouseY > topMargin+ canvasHeight + 2* gridY)){
             sendToPd('removeObject', spots[selectedSpot].id);
             spots.splice(selectedSpot,1);
         }
@@ -247,7 +247,7 @@ function mouseReleased(){
 
 function mousePressed() {
     selectedSpot = -1;
-    let returnFalse = ((mouseX > leftMargin)&&(mouseY > topMargin));
+    let returnFalse = ((mouseX > leftMargin)&&(mouseY > topMargin)&&(mouseX < leftMargin + canvasWidth)&&(mouseY < topMargin + canvasHeight));
     for (let i = 0; i < spots.length; i++) {
         if(spots[i].checkMouse()){
             selectedSpot = i;
