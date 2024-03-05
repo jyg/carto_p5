@@ -14,7 +14,7 @@ let player_x = 0;
 let player_y = 0;
 
 
-let sizeX = window.innerWidth - 20;
+let sizeX = window.innerWidth;
 let sizeY = window.innerHeight - 20;
 let gridX = sizeX / 25;
 let gridY = sizeY / 25;
@@ -61,8 +61,6 @@ function setup()    {
     let newPresetButton;
     for (let i = 0; i < nbOfButtons ; i++){
         newPresetButton = createButton("p"+ i);
-        newPresetButton.position(0, gridY *(i+3));
-        newPresetButton.size(gridX*2, gridY);
         newPresetButton.mouseClicked(() => {
             table = loadTable('assets/spots'+i+'.csv', 'csv','header',populateSpots)
         });
@@ -73,7 +71,7 @@ function setup()    {
     clearButton = createButton("Poubelle");
     //clearButton.mouseClicked(clearAll);
     // create Export button
-    saveButton = createButton("Envoyer ma \n Composition"); 
+    saveButton = createButton("Envoyer ma \n Compo"); 
     saveButton.mouseClicked(exportData);
     
     // Create newSpotButton
@@ -133,7 +131,7 @@ function draw()
 }
   
 function windowResized() {
-    sizeX = window.innerWidth - 20;
+    sizeX = window.innerWidth;
     sizeY = window.innerHeight - 20;
 
     gridX = sizeX / 25;
@@ -151,31 +149,31 @@ function windowResized() {
     
     // resize preset buttons
     for (let i = 0; i < presetButtons.length ; i++){
-          presetButtons[i].position(0, gridY *(i+3));
-          presetButtons[i].size(gridX*2, gridY);
+          presetButtons[i].position(0, topMargin + gridY * 2 * i);
+          presetButtons[i].size(gridX*2, 2 * gridY);
     }
     
     // resize clearButton
-    clearButton.size(2 * gridX , gridY);
-    clearButton.position(0, topMargin + canvasHeight + 2 * gridY);
+    clearButton.size(2 * gridX , 2 * gridY);
+    clearButton.position(0, topMargin + canvasHeight + 1 * gridY);
     //resize saveButton
     saveButton.size(gridX * 2 , 2 * gridY);
     saveButton.position(leftMargin + canvasWidth, 0);
     
     // resize  newSpotButton
-    newSpotButton.size(gridX * 2 , gridY);
+    newSpotButton.size(gridX * 2 , 2 * gridY);
     newSpotButton.position(gridX * 8, 0);
     
     
-    fullscreenButton.size(gridX * 2 , gridY);
-    fullscreenButton.position(leftMargin + canvasWidth, topMargin + canvasHeight + 2 * gridY);
+    fullscreenButton.size(gridX * 2 , 2 * gridY);
+    fullscreenButton.position(leftMargin + canvasWidth, topMargin + canvasHeight + gridY);
     
     // resize textfield (inp)
     inp.position(gridX *19.5 , 0);
-    inp.size(gridX * 3, gridY);
+    inp.size(gridX * 3, 2 * gridY);
     // resize popup menu
     selectSound.position(gridX * 3, 0);
-    selectSound.size(gridX*4,gridY);
+    selectSound.size(gridX*4,2 * gridY);
 }
         
     // Soundspot class
@@ -234,7 +232,7 @@ function mouseDragged() {
 
 function mouseReleased(){
     if(selectedSpot>-1){
-        if ((mouseX < 2 * gridX)&&(mouseY > topMargin+ canvasHeight + 2* gridY)){
+        if ((mouseX < 2 * gridX)&&(mouseY > topMargin+ canvasHeight + gridY)){
             sendToPd('removeObject', spots[selectedSpot].id);
             spots.splice(selectedSpot,1);
         }
