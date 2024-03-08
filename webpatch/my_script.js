@@ -8,7 +8,7 @@ let currentId = 0;
 let msg;    //   ?
 let table;
 
-let url = 'http://s184785159.onlinehome.fr/carto/mail.php';  // for posting table
+let url = 'https://s184785159.onlinehome.fr/carto/mail.php';  // for posting table
 
 let player_x = 0;
 let player_y = 0;
