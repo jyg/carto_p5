@@ -54,16 +54,58 @@ function getMyPreset(_i){
 
      // save local storage for currentPreset
     if(currentPreset > -1){
-        // create export table from current data
-        
-        // create local storage
-        //table = storeItem(presetList[currentPreset]+ '.csv') 
-    }        
-    // if there is local storage for _i: 
-    
-    // else
-        table = loadTable('assets/'+ presetList[_i]+ '.csv', 'csv','header',loadData);
+        saveData(currentPreset);
+    }
+    // update currentPreset number
     currentPreset = _i;
+    
+    // search for local storage 
+    let tableString = getItem(presetList[currentPreset]+ '.csv');
+    if(tableString === null) {
+       table = loadTable('assets/'+ presetList[currentPreset]+ '.csv', 'csv','header',loadData);
+    }
+    else {
+        table = parseTable(tableString);  
+        loadData();
+    }
+}
+function clearCurrentPreset(){
+    table = loadTable('assets/'+ presetList[currentPreset]+ '.csv', 'csv','header',loadData);
+
+}
+
+
+
+function parseTable(_tableString) {
+  // Split the string into rows
+  let rows = _tableString.trim().split('\n');
+
+  // Extract header
+  let headers = rows[0].split(',').map(header => header.trim());
+  
+  // Create a new p5.Table
+  let newTable = new p5.Table();
+  
+  // Add columns to the table
+  let nb_of_columns=0;
+  for (let header of headers) {
+    if(header !== ''){
+      newTable.addColumn(header);
+      nb_of_columns++;
+    }
+  }
+  
+  // Parse the rest of the rows
+  for (let i = 1; i < rows.length; i++) {
+     let rowValues = rows[i].split(',').map(value => value.trim());
+     let newRow = newTable.addRow();
+         for (let j = 0; j < rowValues.length; j++) {
+           if(j< nb_of_columns) {
+               newRow.setString(j, rowValues[j]);
+           }
+         }
+    }
+  return newTable;
 }
 
 function loadData(){ 
@@ -80,7 +122,7 @@ function loadData(){
         if(type == 'sound'){
             spots.push(new Soundspot(currentId, table.getNum(i,'x'), table.getNum(i,'y'), table.getNum(i,'size'),table.getString(i,'file')));
             currentId ++;
-      }
+        }
         else if (type == 'menu_item'){
             selectSound.option(table.getString(i,2),table.getString(i,1)+'/'+table.getString(i,2));
         }
@@ -92,16 +134,16 @@ function loadData(){
     // communicate with pd
     sendToPd('deleteAll','');
     for (let i = 0; i < spots.length; i++) {
-        sendToPd('addObject', [i, spots[i].x, spots[i].y, spots[i].size,spots[i].file]);
+        sendToPd('addObject', [i, spots[i].x, spots[i].y, spots[i].size,spots[i].file]); 
     }
 }
 
-function preload() {
+function preload(){
     font = loadFont('KronaOne-Regular.ttf');
 }
 
 
-function setup()    {
+function setup(){
     if (webgl){
         createCanvas(sizeX, sizeY, WEBGL);
         textFont(font);
@@ -115,7 +157,9 @@ function setup()    {
                   
     // only for osc bridge mode
     setupOscBridge();
-    
+
+    selectSound = createSelect();
+
     // Create preset buttons
     let newPresetButton;
     for (let i = 0; i < presetList.length ; i++){
@@ -125,16 +169,14 @@ function setup()    {
         });
         presetButtons.push(newPresetButton);
     }
-    
-    // load first preset
-    getMyPreset(0);  
-    
+       
     // create clear button
-    clearButton = createButton("Poubelle");
-    //clearButton.mouseClicked(clearAll);
+    clearButton = createButton("Effacer");
+    clearButton.mouseClicked(clearCurrentPreset);
+    
     // create Export button
     saveButton = createButton("Envoyer ma \n Compo"); 
-    saveButton.mouseClicked(exportData);
+    saveButton.mouseClicked(saveData);
     
     // Create newSpotButton
     newSpotButton = createButton("+");
@@ -148,13 +190,13 @@ function setup()    {
     // input fields
     inp = createInput('Prénom - Titre');
     
-    selectSound = createSelect();
+    // load first preset
+    getMyPreset(0);  
     
-    windowResized() 
+    windowResized(); 
 }
 
-function draw()
-{
+function draw(){
     // draw background
     background(200);
     
@@ -284,7 +326,6 @@ class Soundspot {
     move(_x,_y) {
         this.x = (_x - leftMargin)/canvasWidth;
         this.y=  (_y - topMargin)/canvasHeight;
-        print("this.id="+ this.id);
         sendToPd('updateObject', [ this.id, this.x, this.y]);
 
     }
@@ -338,13 +379,17 @@ function updatePlayer(){
     }
 }
   
-function exportData(){
+function saveData(_preset){
+    // create export struct
     let tableExport = new p5.Table();
     tableExport.addColumn('type');
     tableExport.addColumn('x');
     tableExport.addColumn('y');
     tableExport.addColumn('size');
     tableExport.addColumn('file');
+    
+    // create struct for text file export
+    let tableString = 'type,x,y,size,file,\n';
     
     // copy all soundspot data
     for(let i = 0 ; i < spots.length ; i++){
@@ -354,24 +399,35 @@ function exportData(){
         newRow.setNum('y', spots[i].y);
         newRow.setNum('size', spots[i].size);
         newRow.setString('file', spots[i].file);
+        // append in tableString
+        tableString += 'sound,' +  spots[i].x + ','+ spots[i].y + ',' + spots[i].size + ',' + spots[i].file + ',\n';
     }
-    
-    let tableString = '';
-    // Iterate over rows
-    for (let i = 0; i < tableExport.getRowCount(); i++) {
-        // Iterate over columns
-        for (let j = 0; j < tableExport.getColumnCount(); j++) {
-            // Append cell value to the string
-            tableString += tableExport.getString(i, j) + ',';
+    // copy all sound options in selectSound dropdown
+    for (let i = 0; i < table.getRowCount(); i++) {
+        
+        let type = table.getString(i,'type');
+        if (type == 'menu_item'){
+            let newRow = tableExport.addRow();
+            newRow.setString('type', 'menu_item');
+            newRow.setString(1, table.getString(i,1));
+            newRow.setString(2, table.getString(i,2));
+            // append in tableString
+            tableString += 'menu_item,' + table.getString(i,1) + ', ' + table.getString(i,2) + ',\n';
+       }
+        else if (type == 'other'){
+            // import other data here
         }
-        // Append newline after each row
-        tableString += '\n';
-    }
-    // Print the resulting string
-    console.log(tableString);
-    sendEmail(tableString);
-    saveTable(tableExport, 'tableExport.csv');
+    }   
+                // create local storage
+     storeItem(presetList[_preset]+ '.csv', tableString) ;
 }
+  //// EXPORT
+    // Print the resulting string
+//    console.log(tableString);
+//    sendEmail(tableString);
+    
+//    saveTable(tableExport, 'tableExport.csv');
+//}
 
 async function sendEmail(_message) {
     const data = {
