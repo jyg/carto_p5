@@ -6,7 +6,7 @@ let selectedSpot = -1;
 let currentId = 0;
 
 let msg;    //   ?
-let table;
+let table;  
 
 let url = 'https://s184785159.onlinehome.fr/carto/mail.php';  // for posting table
 
@@ -27,7 +27,7 @@ let canvasHeight = gridY * 20;
 let presetButtons = [];
 
 // list of presets. For each name corresponds a .csv file in assets folder
-let presetList = ['groupeA','groupeB'];
+let presetList = ['aide','groupeA','groupeB'];
 
 let currentPreset = -1;
 
@@ -41,19 +41,32 @@ let fullscreenButton;
 let inp;
 let selectSound;
 
-function loadData(){
-  
+function getMyPreset(_i){
     // refresh color of preset buttons
-    
     for (let i = 0; i < presetList.length; i++){
-        if (i == currentPreset){
-            presetButtons[i].style('background-color', color(110));
+        if (i == _i){
+            presetButtons[i].style('background-color', color(240));
         }
-        else{
-            presetButtons[i].style('background-color', color(200));
+        else {
+          presetButtons[i].style('background-color', color(200));
         }
-    
     }
+
+     // save local storage for currentPreset
+    if(currentPreset > -1){
+        // create export table from current data
+        
+        // create local storage
+        //table = storeItem(presetList[currentPreset]+ '.csv') 
+    }        
+    // if there is local storage for _i: 
+    
+    // else
+        table = loadTable('assets/'+ presetList[_i]+ '.csv', 'csv','header',loadData);
+    currentPreset = _i;
+}
+
+function loadData(){ 
     // delete all existing rows in spots table
     spots.splice(0,99);
     // delete all existing options in droplist
@@ -108,24 +121,13 @@ function setup()    {
     for (let i = 0; i < presetList.length ; i++){
         newPresetButton = createButton(presetList[i]);
         newPresetButton.mouseClicked(() => {
-            // save local storage for currentPreset
-            
-            // check if local storage for i 
-    
-            // else
-            table = loadTable('assets/'+ presetList[i]+ '.csv', 'csv','header',loadData);
-            currentPreset = i;
+            getMyPreset(i);
         });
         presetButtons.push(newPresetButton);
     }
     
     // load first preset
-    currentPreset = 0;
-    // check if local storage here 
-    
-    // else
-    table = loadTable('assets/'+ presetList[currentPreset]+ '.csv', 'csv','header',loadData);
-    
+    getMyPreset(0);  
     
     // create clear button
     clearButton = createButton("Poubelle");

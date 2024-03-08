@@ -6,9 +6,9 @@ let selectedSpot = -1;
 let currentId = 0;
 
 let msg;    //   ?
-let table;
+let table;  
 
-let url = 'http://s184785159.onlinehome.fr/carto/mail.php';  // for posting table
+let url = 'https://s184785159.onlinehome.fr/carto/mail.php';  // for posting table
 
 let player_x = 0;
 let player_y = 0;
@@ -25,7 +25,11 @@ let canvasHeight = gridY * 20;
  
 // array for preset buttons
 let presetButtons = [];
-let nbOfButtons = 2;
+
+// list of presets. For each name corresponds a .csv file in assets folder
+let presetList = ['aide','groupeA','groupeB'];
+
+let currentPreset = -1;
 
 // control buttons
 let clearButton;
@@ -36,6 +40,61 @@ let fullscreenButton;
 // input field and dropdown menu
 let inp;
 let selectSound;
+
+function getMyPreset(_i){
+    // refresh color of preset buttons
+    for (let i = 0; i < presetList.length; i++){
+        if (i == _i){
+            presetButtons[i].style('background-color', color(240));
+        }
+        else {
+          presetButtons[i].style('background-color', color(200));
+        }
+    }
+
+     // save local storage for currentPreset
+    if(currentPreset > -1){
+        // create export table from current data
+        
+        // create local storage
+        //table = storeItem(presetList[currentPreset]+ '.csv') 
+    }        
+    // if there is local storage for _i: 
+    
+    // else
+        table = loadTable('assets/'+ presetList[_i]+ '.csv', 'csv','header',loadData);
+    currentPreset = _i;
+}
+
+function loadData(){ 
+    // delete all existing rows in spots table
+    spots.splice(0,99);
+    // delete all existing options in droplist
+    selectSound.remove();
+    selectSound = createSelect();
+    selectSound.position(gridX * 3, 0);
+    selectSound.size(gridX*4,2 * gridY);    
+    currentId = 0;
+    for (let i = 0; i < table.getRowCount(); i++) {
+        let type = table.getString(i,'type');
+        if(type == 'sound'){
+            spots.push(new Soundspot(currentId, table.getNum(i,'x'), table.getNum(i,'y'), table.getNum(i,'size'),table.getString(i,'file')));
+            currentId ++;
+      }
+        else if (type == 'menu_item'){
+            selectSound.option(table.getString(i,2),table.getString(i,1)+'/'+table.getString(i,2));
+        }
+        else if (type == 'other'){
+            // import other data here
+        }
+    }
+       
+    // communicate with pd
+    sendToPd('deleteAll','');
+    for (let i = 0; i < spots.length; i++) {
+        sendToPd('addObject', [i, spots[i].x, spots[i].y, spots[i].size,spots[i].file]);
+    }
+}
 
 function preload() {
     font = loadFont('KronaOne-Regular.ttf');
@@ -59,13 +118,16 @@ function setup()    {
     
     // Create preset buttons
     let newPresetButton;
-    for (let i = 0; i < nbOfButtons ; i++){
-        newPresetButton = createButton("p"+ i);
+    for (let i = 0; i < presetList.length ; i++){
+        newPresetButton = createButton(presetList[i]);
         newPresetButton.mouseClicked(() => {
-            table = loadTable('assets/spots'+i+'.csv', 'csv','header',populateSpots)
+            getMyPreset(i);
         });
         presetButtons.push(newPresetButton);
     }
+    
+    // load first preset
+    getMyPreset(0);  
     
     // create clear button
     clearButton = createButton("Poubelle");
@@ -87,21 +149,6 @@ function setup()    {
     inp = createInput('Prénom - Titre');
     
     selectSound = createSelect();
-    selectSound.option('piano1_Juliette_1');
-    selectSound.option('piano1_Juliette_2');
-    selectSound.option('piano1_Juliette_3');
-    selectSound.option('piano1_Juliette_4');
-    selectSound.option('piano1_Juliette_5');
-    selectSound.option('piano1_Juliette_6');
-    selectSound.option('piano1_Juliette_7');
-    selectSound.option('piano2_Helene_1');
-    selectSound.option('piano2_Helene_2');
-    selectSound.option('piano2_Helene_3');
-    selectSound.option('piano2_Helene_4');
-    selectSound.option('piano2_Helene_5');
-    selectSound.option('piano2_Helene_6');
-    selectSound.option('piano2_Helene_7');
-    selectSound.option('guitare1_Arthur1');
     
     windowResized() 
 }
@@ -149,7 +196,7 @@ function windowResized() {
     
     // resize preset buttons
     for (let i = 0; i < presetButtons.length ; i++){
-          presetButtons[i].position(0, topMargin + gridY * 2 * i);
+          presetButtons[i].position(0, topMargin + i * 2 * gridY);
           presetButtons[i].size(gridX*2, 2 * gridY);
     }
     
@@ -164,7 +211,6 @@ function windowResized() {
     newSpotButton.size(gridX * 2 , 2 * gridY);
     newSpotButton.position(gridX * 8, 0);
     
-    
     fullscreenButton.size(gridX * 2 , 2 * gridY);
     fullscreenButton.position(leftMargin + canvasWidth, topMargin + canvasHeight + gridY);
     
@@ -176,20 +222,69 @@ function windowResized() {
     selectSound.size(gridX*4,2 * gridY);
 }
         
+        
+function mouseDragged() {
+    if (selectedSpot>-1){
+        spots[selectedSpot].move(mouseX,mouseY);
+        }
+    updatePlayer();
+}
+
+function mouseReleased(){
+    if(selectedSpot>-1){
+        if ((mouseX < 2 * gridX)&&(mouseY > topMargin+ canvasHeight + gridY)){
+            sendToPd('removeObject', spots[selectedSpot].id);
+            spots.splice(selectedSpot,1);
+        }
+        else 
+            spots[selectedSpot].selected = 0;
+        selectedSpot = -1;
+    }
+}
+
+function mousePressed() {
+    selectedSpot = -1;
+    let returnFalse = ((mouseX > leftMargin)&&(mouseY > topMargin)&&(mouseX < leftMargin + canvasWidth)&&(mouseY < topMargin + canvasHeight));
+    for (let i = 0; i < spots.length; i++) {
+        if(spots[i].checkMouse()){
+            selectedSpot = i;
+            return false;     // do this prevent default touch interaction
+            }
+        }
+    updatePlayer();
+    if (returnFalse) 
+        return false;    // do this prevent default touch interaction
+    else
+        return; 
+}
+  
+ document.addEventListener('gesturestart', function(e) {
+  e.preventDefault();
+ });  
+ 
     // Soundspot class
 class Soundspot {
-    constructor(_id, _x,_y,_size,_label) {
+    constructor(_id, _x,_y,_size,_file) {
         this.id = _id
         this.x = _x
         this.y = _y;
+        
+
         this.size = _size;
         this.selected = 0;
-        this.label = _label;
+        this.file = _file;
+
+        
+        // split folder and filenames. Folder depth MUST be 1 : AUDIOS/<Folder>/<filename>.wav
+        let splitString = split(_file, '\/'); 
+        
+        this.label = splitString[splitString.length - 1];
         }
         
     move(_x,_y) {
         this.x = (_x - leftMargin)/canvasWidth;
         this.y=  (_y - topMargin)/canvasHeight;
+        print("this.id="+ this.id);
         sendToPd('updateObject', [ this.id, this.x, this.y]);
 
     }
@@ -222,68 +317,14 @@ class Soundspot {
         }
     }
 }
-        
-function mouseDragged() {
-    if (selectedSpot>-1){
-        spots[selectedSpot].move(mouseX,mouseY);
-        }
-    updatePlayer();
-}
 
-function mouseReleased(){
-    if(selectedSpot>-1){
-        if ((mouseX < 2 * gridX)&&(mouseY > topMargin+ canvasHeight + gridY)){
-            sendToPd('removeObject', spots[selectedSpot].id);
-            spots.splice(selectedSpot,1);
-        }
-        else 
-            spots[selectedSpot].selected = 0;
-        selectedSpot = -1;
-    }
-
-}
-
-function mousePressed() {
-    selectedSpot = -1;
-    let returnFalse = ((mouseX > leftMargin)&&(mouseY > topMargin)&&(mouseX < leftMargin + canvasWidth)&&(mouseY < topMargin + canvasHeight));
-    for (let i = 0; i < spots.length; i++) {
-        if(spots[i].checkMouse()){
-            selectedSpot = i;
-            return false;     // do this prevent default touch interaction
-            }
-        }
-    updatePlayer();
-    if (returnFalse) 
-        return false;    // do this prevent default touch interaction
-    else
-        return; 
-}
-  
- document.addEventListener('gesturestart', function(e) {
-  e.preventDefault();
- });  
-  
-function populateSpots(){
-    // delete all existing rows in spots table
-    spots.splice(0,99);
-    
-    for (let i = 0; i < table.getRowCount(); i++) {
-        let type = table.getString(i,'type');
-        if(type == 'sound'){
-            spots.push(new Soundspot(i, table.getNum(i,'x'), table.getNum(i,'y'), table.getNum(i,'size'),table.getString(i,'label')));
-        }
-        else if (type == 'other'){
-            // import other data here
-        }
-    }
-    currentId=table.getRowCount()-1;
-    
-    // communicate with pd
-    sendToPd('deleteAll','');
-    for (let i = 0; i < spots.length; i++) {
-        sendToPd('addObject', [i, spots[i].x, spots[i].y, spots[i].size,spots[i].label]);
-    }
-}
+function createNewSpot(){
+    let i = spots.length; 
+    currentId+=1;
+    spots.push(new Soundspot(currentId, 0.5, 0.5, 1, selectSound.value()));
+    // we send to pd the filename prepended with the foldername
+    sendToPd('addObject', [currentId, spots[i].x, spots[i].y, spots[i].size, selectSound.value()]);        
+ }
 
 function updatePlayer(){
     if ((selectedSpot == -1)){
@@ -303,7 +344,7 @@ function exportData(){
     tableExport.addColumn('x');
     tableExport.addColumn('y');
     tableExport.addColumn('size');
-    tableExport.addColumn('label');
+    tableExport.addColumn('file');
     
     // copy all soundspot data
     for(let i = 0 ; i < spots.length ; i++){
@@ -312,7 +353,7 @@ function exportData(){
         newRow.setNum('x', spots[i].x);
         newRow.setNum('y', spots[i].y);
         newRow.setNum('size', spots[i].size);
-        newRow.setString('label', spots[i].label);
+        newRow.setString('file', spots[i].file);
     }
     
     let tableString = '';
@@ -329,7 +370,7 @@ function exportData(){
     // Print the resulting string
     console.log(tableString);
     sendEmail(tableString);
-//    saveTable(tableExport, 'tableExport.csv');
+    saveTable(tableExport, 'tableExport.csv');
 }
 
 async function sendEmail(_message) {
@@ -352,11 +393,5 @@ async function sendEmail(_message) {
     console.log(result);
 }
 
-function createNewSpot(){
-    let i = spots.length; 
-    currentId+=1;
-    spots.push(new Soundspot(currentId, 0.5, 0.5, 1, selectSound.value()));
-    sendToPd('addObject', [currentId, spots[i].x, spots[i].y, spots[i].size, spots[i].label]);        
- }
  
  
