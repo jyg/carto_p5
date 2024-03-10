@@ -253,7 +253,7 @@ function setup(){
     // input fields
     inp = createInput('Prenom - Titre');
     
-    alphaSlider = createSlider(0, 255,255);
+    alphaSlider = createSlider(0, 255,180);
     
     // load first preset
     getMyPreset(0);  
@@ -271,8 +271,10 @@ function draw(){
     }
     
     // scene rectangle 
-    //fill(240,240,240,120);
-    //rect (leftMargin,topMargin, canvasWidth, canvasHeight);
+    noFill();
+    stroke(0,alphaSlider.value());
+    rect (leftMargin,topMargin, canvasWidth, canvasHeight);
+    tint(255, 255-alphaSlider.value());
     image(img, leftMargin, topMargin + topOffset, canvasWidth, canvasHeight);
      
     // draw tokens
