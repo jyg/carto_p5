@@ -6,7 +6,9 @@ let selectedSpot = -1;
 let currentId = 0;
 
 let msg;    //   ?
-let table;  
+let table;  // table used for importing session
+
+let img;
 
 let url = 'https://s184785159.onlinehome.fr/carto/mail.php';  // for posting table
 
@@ -22,6 +24,7 @@ let leftMargin= 3 * gridX;
 let topMargin = 2 * gridY;
 let canvasWidth = gridX * 20;
 let canvasHeight = gridY * 20;
+let topOffset = 0;
  
 // array for preset buttons
 let presetButtons = [];
@@ -36,6 +39,8 @@ let clearButton;
 let saveButton;
 let newSpotButton;
 let fullscreenButton; 
+// slider
+let alphaSlider;  // for transparency of soundpots
 
 // input field and dropdown menu
 let inp;
@@ -108,13 +113,64 @@ function parseTable(_tableString) {
   return newTable;
 }
 
+  
+function saveData(_preset){
+    // create export struct
+    let tableExport = new p5.Table();
+    tableExport.addColumn('type');
+    tableExport.addColumn('x');
+    tableExport.addColumn('y');
+    tableExport.addColumn('size');
+    tableExport.addColumn('file');
+    
+    // create struct for text file export
+    let tableString = 'type,x,y,size,file\n';
+    
+    // copy all soundspot data
+    for(let i = 0 ; i < spots.length ; i++){
+        let newRow = tableExport.addRow();
+        newRow.setString('type', 'sound');
+        newRow.setNum('x', spots[i].x);
+        newRow.setNum('y', spots[i].y);
+        newRow.setNum('size', spots[i].size);
+        newRow.setString('file', spots[i].file);
+        // append in tableString
+        tableString += 'sound,' +  spots[i].x + ','+ spots[i].y + ',' + spots[i].size + ',' + spots[i].file + '\n';
+    }
+    // copy all sound options in selectSound dropdown
+    for (let i = 0; i < table.getRowCount(); i++) {
+        
+        let type = table.getString(i,'type');
+        if (type == 'menu_item'){
+            let newRow = tableExport.addRow();
+            newRow.setString('type', 'menu_item');
+            newRow.setString(1, table.getString(i,1));
+            newRow.setString(2, table.getString(i,2));
+            // append in tableString
+            tableString += 'menu_item,' + table.getString(i,1) + ', ' + table.getString(i,2) + '\n';
+       }
+        else if (type == 'other'){
+            // import other data here
+        }
+    }   
+                // create local storage
+     storeItem(presetList[_preset]+ '.csv', tableString) ;
+}
+  //// EXPORT
+    // Print the resulting string
+//    console.log(tableString);
+//    sendEmail(tableString);
+    
+//    saveTable(tableExport, 'tableExport.csv');
+//}
+
 function loadData(){ 
     // delete all existing rows in spots table
     spots.splice(0,99);
     // delete all existing options in droplist
     selectSound.remove();
     selectSound = createSelect();
-    selectSound.position(gridX * 3, 0);
+    selectSound.position(gridX * 3, topOffset);
     selectSound.size(gridX*4,2 * gridY);    
     currentId = 0;
     for (let i = 0; i < table.getRowCount(); i++) {
@@ -140,6 +196,7 @@ function loadData(){
 
 function preload(){
     font = loadFont('KronaOne-Regular.ttf');
+    img = loadImage('assets/fond_de_carte.jpg');
 }
 
 
@@ -158,6 +215,12 @@ function setup(){
     // only for osc bridge mode
     setupOscBridge();
 
+   if(document.getElementById("Start-Audio-Button") !== null){
+      topOffset = 24;
+       print ('topOffset = 24');
+    }
+    
+
     selectSound = createSelect();
 
     // Create preset buttons
@@ -171,7 +234,7 @@ function setup(){
     }
        
     // create clear button
-    clearButton = createButton("Effacer");
+    clearButton = createButton("Supprimer");
     clearButton.mouseClicked(clearCurrentPreset);
     
     // create Export button
@@ -188,7 +251,9 @@ function setup(){
         fullscreen(!fs);  });
     
     // input fields
-    inp = createInput('Prénom - Titre');
+    inp = createInput('Prenom - Titre');
+    
+    alphaSlider = createSlider(0, 255,255);
     
     // load first preset
     getMyPreset(0);  
@@ -205,9 +270,10 @@ function draw(){
         translate(-sizeX/2,-sizeY/2);
     }
     
-    // scene rectangle TODO : use variables for margins
-    fill(240);
-    rect (leftMargin,topMargin, canvasWidth, canvasHeight);
+    // scene rectangle 
+    //fill(240,240,240,120);
+    //rect (leftMargin,topMargin, canvasWidth, canvasHeight);
+    image(img, leftMargin, topMargin + topOffset, canvasWidth, canvasHeight);
      
     // draw tokens
     for (let i = 0; i < spots.length; i++) {
@@ -221,8 +287,7 @@ function draw(){
   
 function windowResized() {
     sizeX = window.innerWidth;
-    sizeY = window.innerHeight - 20;
-
+    sizeY = window.innerHeight - topOffset;
     gridX = sizeX / 25;
     gridY = sizeY / 25;
     
@@ -238,30 +303,34 @@ function windowResized() {
     
     // resize preset buttons
     for (let i = 0; i < presetButtons.length ; i++){
-          presetButtons[i].position(0, topMargin + i * 2 * gridY);
+          presetButtons[i].position(0, topOffset+topMargin + i * 2 * gridY);
           presetButtons[i].size(gridX*2, 2 * gridY);
     }
     
     // resize clearButton
     clearButton.size(2 * gridX , 2 * gridY);
-    clearButton.position(0, topMargin + canvasHeight + 1 * gridY);
+    clearButton.position(0, topOffset + topMargin + canvasHeight + 1 * gridY);
     //resize saveButton
     saveButton.size(gridX * 2 , 2 * gridY);
-    saveButton.position(leftMargin + canvasWidth, 0);
+    saveButton.position(leftMargin + canvasWidth, topOffset);
     
     // resize  newSpotButton
     newSpotButton.size(gridX * 2 , 2 * gridY);
-    newSpotButton.position(gridX * 8, 0);
+    newSpotButton.position(gridX * 8, topOffset);
     
     fullscreenButton.size(gridX * 2 , 2 * gridY);
-    fullscreenButton.position(leftMargin + canvasWidth, topMargin + canvasHeight + gridY);
+    fullscreenButton.position(leftMargin + canvasWidth, topOffset + topMargin + canvasHeight + gridY);
     
     // resize textfield (inp)
-    inp.position(gridX *19.5 , 0);
+    inp.position(gridX *19.5 , topOffset);
     inp.size(gridX * 3, 2 * gridY);
     // resize popup menu
-    selectSound.position(gridX * 3, 0);
+    selectSound.position(gridX * 3, topOffset);
     selectSound.size(gridX*4,2 * gridY);
+    
+    // slider
+    alphaSlider.position(gridX * 12, topOffset + gridY);
+    alphaSlider.size(gridX * 4);
 }
         
         
@@ -331,13 +400,14 @@ class Soundspot {
     }
 
     display() {
+        noStroke();
         if (this.selected){
-            fill(100);
+            fill(100,100,100,alphaSlider.value());
         }
         else
-            fill (240);
+            fill (240,240,240,alphaSlider.value());
         ellipse(leftMargin + this.x * canvasWidth, topMargin + this.y * canvasHeight, this.size * gridX, this.size * gridY);
-        fill (0);
+        fill (0,0,0,alphaSlider.value());
         push();
         translate(0,0,1);  // make text appear in front
         text(this.label, leftMargin + this.x * canvasWidth -gridX, topMargin + this.y * canvasHeight - gridY*0.7);
@@ -378,56 +448,7 @@ function updatePlayer(){
             }         
     }
 }
-  
-function saveData(_preset){
-    // create export struct
-    let tableExport = new p5.Table();
-    tableExport.addColumn('type');
-    tableExport.addColumn('x');
-    tableExport.addColumn('y');
-    tableExport.addColumn('size');
-    tableExport.addColumn('file');
-    
-    // create struct for text file export
-    let tableString = 'type,x,y,size,file,\n';
-    
-    // copy all soundspot data
-    for(let i = 0 ; i < spots.length ; i++){
-        let newRow = tableExport.addRow();
-        newRow.setString('type', 'sound');
-        newRow.setNum('x', spots[i].x);
-        newRow.setNum('y', spots[i].y);
-        newRow.setNum('size', spots[i].size);
-        newRow.setString('file', spots[i].file);
-        // append in tableString
-        tableString += 'sound,' +  spots[i].x + ','+ spots[i].y + ',' + spots[i].size + ',' + spots[i].file + ',\n';
-    }
-    // copy all sound options in selectSound dropdown
-    for (let i = 0; i < table.getRowCount(); i++) {
-        
-        let type = table.getString(i,'type');
-        if (type == 'menu_item'){
-            let newRow = tableExport.addRow();
-            newRow.setString('type', 'menu_item');
-            newRow.setString(1, table.getString(i,1));
-            newRow.setString(2, table.getString(i,2));
-            // append in tableString
-            tableString += 'menu_item,' + table.getString(i,1) + ', ' + table.getString(i,2) + ',\n';
-       }
-        else if (type == 'other'){
-            // import other data here
-        }
-    }   
-                // create local storage
-     storeItem(presetList[_preset]+ '.csv', tableString) ;
-}
-  //// EXPORT
-    // Print the resulting string
-//    console.log(tableString);
-//    sendEmail(tableString);
-    
-//    saveTable(tableExport, 'tableExport.csv');
-//}
+
 
 async function sendEmail(_message) {
     const data = {
