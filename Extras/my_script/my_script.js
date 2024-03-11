@@ -272,10 +272,14 @@ function draw(){
     // scene rectangle 
     noFill();
     stroke(0,alphaSlider.value());
-    rect (leftMargin,topOffset + topMargin, canvasWidth, canvasHeight);
+    rect (leftMargin, topMargin, canvasWidth, canvasHeight);
     tint(255, 255-alphaSlider.value());
-    image(img, leftMargin, topMargin + topOffset, canvasWidth, canvasHeight);
-     
+    image(img, leftMargin, topMargin, canvasWidth, canvasHeight);
+    push();
+    fill(0);
+    translate(0,0,1); 
+    text("carte <----------> sons", gridX * 12.5, gridY);
+    pop();
     // draw tokens
     for (let i = 0; i < spots.length; i++) {
         spots[i].display();
@@ -357,12 +361,14 @@ function mouseReleased(){
 function mousePressed() {
     selectedSpot = -1;
     let returnFalse = ((mouseX > leftMargin)&&(mouseY > topMargin)&&(mouseX < leftMargin + canvasWidth)&&(mouseY < topMargin + canvasHeight));
-    for (let i = 0; i < spots.length; i++) {
-        if(spots[i].checkMouse()){
-            selectedSpot = i;
-            return false;     // do this prevent default touch interaction
+    if (alphaSlider.value()> 127){  // prevent spot-moving
+        for (let i = 0; i < spots.length; i++) {
+            if(spots[i].checkMouse()){
+                selectedSpot = i;
+                return false;     // do this prevent default touch interaction
+                }
             }
-        }
+    }
     updatePlayer();
     if (returnFalse) 
         return false;    // do this prevent default touch interaction
