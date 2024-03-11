@@ -23,8 +23,8 @@ The main pd patch is named main.pd, and is located in root folder.
         ├── libraries/    
         	└── p5.min.js    
         ├── index.html   
-	├── my_font.ttf  
-        └── my_script/		       (p5js project folder) 
+        ├── my_font.ttf            (font duplicated from "my_script" folder) 
+        └── my_script/		   (p5js project folder) 
 	        ├── assets/		       
 	        ├── libraries/		       
 	        ├── my_script.js	
