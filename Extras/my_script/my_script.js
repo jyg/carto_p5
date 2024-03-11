@@ -8,7 +8,8 @@ let currentId = 0;
 let msg;    //   ?
 let table;  // table used for importing session
 
-let img;
+let img; // background image
+let imgFileName = 'assets/fond_de_carte.jpg';  // default image filename
 
 let url = 'https://s184785159.onlinehome.fr/carto/mail.php';  // for posting table
 
@@ -46,6 +47,9 @@ let alphaSlider;  // for transparency of soundpots
 let inp;
 let selectSound;
 
+// browse image file
+let inputImage;
+
 function getMyPreset(_i){
     // refresh color of preset buttons
     for (let i = 0; i < presetList.length; i++){
@@ -64,8 +68,10 @@ function getMyPreset(_i){
     // update currentPreset number
     currentPreset = _i;
     
-    // search for local storage 
+    // search for local storage (saved as an unique string for now)
     let tableString = getItem(presetList[currentPreset]+ '.csv');
+    
+    // if not found, load factory preset
     if(tableString === null) {
        table = loadTable('assets/'+ presetList[currentPreset]+ '.csv', 'csv','header',loadData);
     }
@@ -75,6 +81,7 @@ function getMyPreset(_i){
     }
 }
 function clearCurrentPreset(){
+    // force-load factory preset for current preset
     table = loadTable('assets/'+ presetList[currentPreset]+ '.csv', 'csv','header',loadData);
 
 }
@@ -113,6 +120,14 @@ function parseTable(_tableString) {
   return newTable;
 }
 
+// Create an image if the file is an image.
+function handleImage(file) {
+  if (file.type === 'image') {
+    imgFileName=file.data;
+    img = loadImage(imgFileName);
+   // img.hide();
+  }
+}
   
 function saveData(_preset){
     // create export struct
@@ -153,6 +168,21 @@ function saveData(_preset){
             // import other data here
         }
     }   
+    // save image data  value
+    let newRow = tableExport.addRow();
+    newRow.setString('type', 'image');
+    newRow.setString(1, imgFileName);
+    // append in tableString
+    tableString += 'image,' + imgFileName + '\n';
+    
+    //save alphaSlider value
+    newRow = tableExport.addRow();
+    newRow.setString('type', 'alpha_slider');
+    newRow.setNum(1,alphaSlider.value());
+        // append in tableString
+    tableString += 'alpha_slider,' + str(alphaSlider.value()) + '\n';
+
+    
                 // create local storage
      storeItem(presetList[_preset]+ '.csv', tableString) ;
 }
@@ -182,6 +212,13 @@ function loadData(){
         else if (type == 'menu_item'){
             selectSound.option(table.getString(i,2),table.getString(i,1)+'/'+table.getString(i,2));
         }
+        else if (type == 'image'){
+            imgFileName = table.getString(i,1);
+            img = loadImage(imgFileName);            
+        }
+        else if (type == 'alpha_slider'){
+            alphaSlider.value(table.getNum(i,1));
+        }
         else if (type == 'other'){
             // import other data here
         }
@@ -196,7 +233,7 @@ function loadData(){
 
 function preload(){
     font = loadFont('KronaOne-Regular.ttf');
-    img = loadImage('assets/fond_de_carte.jpg');
+    img = loadImage(imgFileName);
 }
 
 
@@ -252,6 +289,8 @@ function setup(){
     // input fields
     inp = createInput('Prenom - Titre');
     
+    inputImage = createFileInput(handleImage);
+    
     alphaSlider = createSlider(0, 255,180);
     
     // load first preset
@@ -278,7 +317,7 @@ function draw(){
     push();
     fill(0);
     translate(0,0,10); 
-    text("carte <----------> sons", gridX * 12.5, gridY);
+    text("carte <----------> sons", gridX * 12, gridY);
     pop();
     // draw tokens
     for (let i = 0; i < spots.length; i++) {
@@ -286,6 +325,11 @@ function draw(){
     }
     
     // draw listener (mouse) position
+    if (mouseIsPressed === true) {
+        stroke(0);
+        line(player_x, topMargin, player_x, topMargin + canvasHeight);
+        line(leftMargin, player_y, leftMargin + canvasWidth, player_y);
+    }
     fill (200,0,0);
     ellipse(player_x, player_y, gridX/4,gridY/4);
 }
@@ -321,7 +365,7 @@ function windowResized() {
     
     // resize  newSpotButton
     newSpotButton.size(gridX * 2 , 2 * gridY);
-    newSpotButton.position(gridX * 8, topOffset);
+    newSpotButton.position(gridX * 7, topOffset);
     
     fullscreenButton.size(gridX * 2 , 2 * gridY);
     fullscreenButton.position(leftMargin + canvasWidth, topOffset + topMargin + canvasHeight + gridY);
@@ -329,6 +373,11 @@ function windowResized() {
     // resize textfield (inp)
     inp.position(gridX *19.5 , topOffset);
     inp.size(gridX * 3, 2 * gridY);
+    
+    // input image browser
+    inputImage.position(gridX * 9, topOffset+topMargin+canvasHeight + gridY * 1.5);
+    
+    
     // resize popup menu
     selectSound.position(gridX * 3, topOffset);
     selectSound.size(gridX*4,2 * gridY);
