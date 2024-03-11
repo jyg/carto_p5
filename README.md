@@ -17,26 +17,23 @@ The main pd patch is named main.pd, and is located in root folder.
     └── Audios/    
         ├── AllMyAudioFiles.wav    
         └── AllMyAudioFiles.aif    
-    └── export/    
+    └── Extras/    
         ├── assets/	          (folder copied from "my_script" folder)   
         ├── libraries/    
-        	├── p5.min.js    
-        	└── p5.touchgui.js    
-        ├── index.html    
-        └── my_script.js      (file copied from "my_script" folder)    
-    └── Extras/		       
-        ├── extrathings.png		       
-        └── mygesture.svg		       
+        	└── p5.min.js    
+        ├── index.html   
+	├── my_font.ttf  
+        └── my_script/		       
+	        ├── assets/		       
+	        ├── libraries/		       
+	        ├── my_script.js	
+	 	├── index.html
+	        └── sketch.properties	
     └── Libs/		       
         ├── pdAbstraction1.pd		       
         └── pdAbstraction2.pd		       
     └── node/		       
-        └── bridge.js 	 	       
-    └── my_script/		       
-        ├── assets/		       
-        ├── libraries/		       
-        ├── my_script.js		       	       
-        └── sketch.properties		       
+        └── bridge.js 	 	       	       
     ├── main.pd              (pd main patch)       
     ├── osc-bridge.pd        (patch for "tethering" mode)		       
     └── README.md            (this file)	
