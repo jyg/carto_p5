@@ -79,7 +79,7 @@ function getMyPreset(_i){
         table = parseTable(tableString);  
         loadData();
     }
-    let storedImage = getItem(presetList[currentPreset]+'_img');
+    let storedImage = localStorage.getItem(presetList[currentPreset]+'_img');
     if (storedImage) {
         print('Stored Image' + storedImage);
         img = loadImage(storedImage);
@@ -132,7 +132,7 @@ function handleImage(file) {
     img = loadImage(file.data);
     imgFileName = URL.createObjectURL(file.file);   
     print("the URL is "+ imgFileName);
-    storeItem(presetList[currentPreset]+'_img', imgFileName);
+    localStorage.setItem(presetList[currentPreset]+'_img', imgFileName);
   }
 
 }
