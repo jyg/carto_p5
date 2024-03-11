@@ -214,13 +214,12 @@ function setup(){
                   
     // only for osc bridge mode
     setupOscBridge();
-
-   if(document.getElementById("Start-Audio-Button") !== null){
-      topOffset = 30;
-       print ('topOffset = 30');
+    
+    // detect Start-audio-button and add vertical offset
+    if(document.getElementById("Start-Audio-Button") !== null){
+        topOffset = 40;
     }
     
-
     selectSound = createSelect();
 
     // Create preset buttons
