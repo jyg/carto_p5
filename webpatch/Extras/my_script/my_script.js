@@ -273,7 +273,7 @@ function draw(){
     // scene rectangle 
     noFill();
     stroke(0,alphaSlider.value());
-    rect (leftMargin,topMargin, canvasWidth, canvasHeight);
+    rect (leftMargin,topOffset + topMargin, canvasWidth, canvasHeight);
     tint(255, 255-alphaSlider.value());
     image(img, leftMargin, topMargin + topOffset, canvasWidth, canvasHeight);
      
