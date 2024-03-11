@@ -277,7 +277,7 @@ function draw(){
     image(img, leftMargin, topMargin, canvasWidth, canvasHeight);
     push();
     fill(0);
-    translate(0,0,1); 
+    translate(0,0,10); 
     text("carte <----------> sons", gridX * 12.5, gridY);
     pop();
     // draw tokens
