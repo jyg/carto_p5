@@ -47,7 +47,7 @@ let alphaSlider;  // for transparency of soundpots
 let inp;
 let selectSound;
 
-// browse image file
+// browse button
 let inputImage;
 
 function getMyPreset(_i){
@@ -66,8 +66,8 @@ function getMyPreset(_i){
         saveData(currentPreset);
     }
     // update currentPreset number
-    currentPreset = _i;
-    
+    currentPreset = _i;  
+
     // search for local storage (saved as an unique string for now)
     let tableString = getItem(presetList[currentPreset]+ '.csv');
     
@@ -79,11 +79,17 @@ function getMyPreset(_i){
         table = parseTable(tableString);  
         loadData();
     }
+    let storedImage = getItem(presetList[currentPreset]+'_img');
+    if (storedImage) {
+        print('Stored Image' + storedImage);
+        img = loadImage(storedImage);
+    }    
 }
+
 function clearCurrentPreset(){
     // force-load factory preset for current preset
     table = loadTable('assets/'+ presetList[currentPreset]+ '.csv', 'csv','header',loadData);
-
+    
 }
 
 
@@ -123,10 +129,12 @@ function parseTable(_tableString) {
 // Create an image if the file is an image.
 function handleImage(file) {
   if (file.type === 'image') {
-    imgFileName=file.data;
-    img = loadImage(imgFileName);
-   // img.hide();
+    img = loadImage(file.data);
+    imgFileName = URL.createObjectURL(file.file);   
+    print("the URL is "+ imgFileName);
+    storeItem(presetList[currentPreset]+'_img', imgFileName);
   }
+
 }
   
 function saveData(_preset){
@@ -168,13 +176,6 @@ function saveData(_preset){
             // import other data here
         }
     }   
-    // save image data  value
-    let newRow = tableExport.addRow();
-    newRow.setString('type', 'image');
-    newRow.setString(1, imgFileName);
-    // append in tableString
-    tableString += 'image,' + imgFileName + '\n';
-    
     //save alphaSlider value
     newRow = tableExport.addRow();
     newRow.setString('type', 'alpha_slider');
@@ -182,9 +183,17 @@ function saveData(_preset){
         // append in tableString
     tableString += 'alpha_slider,' + str(alphaSlider.value()) + '\n';
 
+   // save image data  value
+   // newRow = tableExport.addRow();
+   // newRow.setString('type', 'image');
+   // newRow.setString(1, imgFileName);
+    // append in tableString
+   // tableString += 'image,' + imgFileName + '\n';
     
                 // create local storage
      storeItem(presetList[_preset]+ '.csv', tableString) ;
+     
+
 }
   //// EXPORT
     // Print the resulting string
@@ -214,7 +223,7 @@ function loadData(){
         }
         else if (type == 'image'){
             imgFileName = table.getString(i,1);
-            img = loadImage(imgFileName);            
+            print ('imgFileName='+ imgFileName);
         }
         else if (type == 'alpha_slider'){
             alphaSlider.value(table.getNum(i,1));
