@@ -216,8 +216,8 @@ function setup(){
     setupOscBridge();
 
    if(document.getElementById("Start-Audio-Button") !== null){
-      topOffset = 24;
-       print ('topOffset = 24');
+      topOffset = 30;
+       print ('topOffset = 30');
     }
     
 
