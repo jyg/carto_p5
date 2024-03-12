@@ -8,8 +8,8 @@ let currentId = 0;
 let msg;    //   ?
 let table;  // table used for importing session
 
-let img; // background image
-let imgFileName = 'assets/fond_de_carte.jpg';  // default image filename
+let img = []; // array of background images for each preset
+//let imgFileName = [];  // array of image filenames for each preset
 
 let url = 'https://s184785159.onlinehome.fr/carto/mail.php';  // for posting table
 
@@ -79,17 +79,16 @@ function getMyPreset(_i){
         table = parseTable(tableString);  
         loadData();
     }
-    let storedImage = localStorage.getItem(presetList[currentPreset]+'_img');
-    if (storedImage) {
-        print('Stored Image' + storedImage);
-        img = loadImage(storedImage);
-    }    
 }
 
 function clearCurrentPreset(){
     // force-load factory preset for current preset
     table = loadTable('assets/'+ presetList[currentPreset]+ '.csv', 'csv','header',loadData);
-    
+    // load default image
+    let defaultImagePath = 'assets/' + presetList[currentPreset] + '.jpg';
+    img[currentPreset] = loadImage(defaultImagePath, () => {
+        localStorage.setItem(presetList[currentPreset] + '_img', defaultImagePath);
+        });
 }
 
 
@@ -129,12 +128,17 @@ function parseTable(_tableString) {
 // Create an image if the file is an image.
 function handleImage(file) {
   if (file.type === 'image') {
-    img = loadImage(file.data);
-    imgFileName = URL.createObjectURL(file.file);   
-    print("the URL is "+ imgFileName);
-    localStorage.setItem(presetList[currentPreset]+'_img', imgFileName);
+    let reader = new FileReader();
+    reader.onload = function(event) {
+      let imageUrl = event.target.result;
+      img[currentPreset] = loadImage(imageUrl, () => {
+          localStorage.setItem(presetList[currentPreset] + '_img', imageUrl);
+      });
+    }
+    reader.readAsDataURL(file.file);
+  } else {
+    console.log('Not an image file!');
   }
-
 }
   
 function saveData(_preset){
@@ -182,13 +186,6 @@ function saveData(_preset){
     newRow.setNum(1,alphaSlider.value());
         // append in tableString
     tableString += 'alpha_slider,' + str(alphaSlider.value()) + '\n';
-
-   // save image data  value
-   // newRow = tableExport.addRow();
-   // newRow.setString('type', 'image');
-   // newRow.setString(1, imgFileName);
-    // append in tableString
-   // tableString += 'image,' + imgFileName + '\n';
     
                 // create local storage
      storeItem(presetList[_preset]+ '.csv', tableString) ;
@@ -221,10 +218,6 @@ function loadData(){
         else if (type == 'menu_item'){
             selectSound.option(table.getString(i,2),table.getString(i,1)+'/'+table.getString(i,2));
         }
-        else if (type == 'image'){
-            imgFileName = table.getString(i,1);
-            print ('imgFileName='+ imgFileName);
-        }
         else if (type == 'alpha_slider'){
             alphaSlider.value(table.getNum(i,1));
         }
@@ -242,7 +235,21 @@ function loadData(){
 
 function preload(){
     font = loadFont('KronaOne-Regular.ttf');
-    img = loadImage(imgFileName);
+    for (let i = 0; i< presetList.length;i++){
+        let storedImage = localStorage.getItem(presetList[i] + '_img');
+        if (storedImage) {
+            img[i] = loadImage(storedImage);
+        } 
+        else {
+            let defaultImagePath = 'assets/' + presetList[i] + '.jpg';
+            img[i] = loadImage(defaultImagePath, () => {
+                localStorage.setItem(presetList[i] + '_img', defaultImagePath);
+                }
+              );
+        }
+            
+    } 
+
 }
 
 
@@ -255,6 +262,7 @@ function setup(){
     else {
         createCanvas(sizeX, sizeY);
     }
+       
       
     //frameRate(10);
                   
@@ -322,7 +330,7 @@ function draw(){
     stroke(0,alphaSlider.value());
     rect (leftMargin, topMargin, canvasWidth, canvasHeight);
     tint(255, 255-alphaSlider.value());
-    image(img, leftMargin, topMargin, canvasWidth, canvasHeight);
+    image(img[currentPreset], leftMargin, topMargin, canvasWidth, canvasHeight);
     push();
     fill(0);
     translate(0,0,10); 
