@@ -287,7 +287,7 @@ function setup(){
     }
        
     // create clear button
-    clearButton = createButton("Supprimer");
+    clearButton = createButton("Effacer");
     clearButton.mouseClicked(clearCurrentPreset);
     
     // create Export button
