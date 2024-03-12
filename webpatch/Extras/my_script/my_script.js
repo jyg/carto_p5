@@ -336,19 +336,21 @@ function draw(){
     translate(0,0,10); 
     text("carte <----------> sons", gridX * 12, gridY);
     pop();
-    // draw tokens
-    for (let i = 0; i < spots.length; i++) {
-        spots[i].display();
-    }
     
     // draw listener (mouse) position
-    if (mouseIsPressed === true) {
-        stroke(0);
+    fill (200,0,0);
+    ellipse(player_x, player_y, gridX/3,gridY/3);
+    if ((mouseIsPressed === true)&&(selectedSpot == -1)) {
+        stroke(0,alphaSlider.value());
         line(player_x, topMargin, player_x, topMargin + canvasHeight);
         line(leftMargin, player_y, leftMargin + canvasWidth, player_y);
     }
-    fill (200,0,0);
-    ellipse(player_x, player_y, gridX/4,gridY/4);
+        // draw tokens
+    for (let i = 0; i < spots.length; i++) {
+        spots[i].display();
+    }
+
+
 }
   
 function windowResized() {
@@ -418,9 +420,11 @@ function mouseReleased(){
             sendToPd('removeObject', spots[selectedSpot].id);
             spots.splice(selectedSpot,1);
         }
-        else 
+        else {
             spots[selectedSpot].selected = 0;
+        }
         selectedSpot = -1;
+        saveData(currentPreset);
     }
 }
 
