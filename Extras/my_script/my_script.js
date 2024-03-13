@@ -31,7 +31,7 @@ let topOffset = 0;
 let presetButtons = [];
 
 // list of presets. For each name corresponds a .csv file in assets folder
-let presetList = ['aide','groupeA','groupeB'];
+let presetList = ['aide','tuto','groupeA', 'groupeB'];
 
 let currentPreset = -1;
 
@@ -189,7 +189,7 @@ function saveData(_preset){
     
                 // create local storage
      storeItem(presetList[_preset]+ '.csv', tableString) ;
-     
+     return(tableString);
 
 }
   //// EXPORT
@@ -290,9 +290,17 @@ function setup(){
     clearButton = createButton("Effacer");
     clearButton.mouseClicked(clearCurrentPreset);
     
+    // mouseover : How to add popup contextual help ?
+    //clearButton.mouseOver(() => {
+    //     clearButton.html('popup'); //
+    //    });
+
+   
+ 
+    
     // create Export button
-    saveButton = createButton("Envoyer ma \n Compo"); 
-    saveButton.mouseClicked(saveData);
+    saveButton = createButton("Partager\n Compo"); 
+    saveButton.mouseClicked(sendMail);
     
     // Create newSpotButton
     newSpotButton = createButton("+");
@@ -304,7 +312,7 @@ function setup(){
         fullscreen(!fs);  });
     
     // input fields
-    inp = createInput('Prenom - Titre');
+    inp = createInput('Prénom - Titre');
     
     inputImage = createFileInput(handleImage);
     
@@ -331,10 +339,16 @@ function draw(){
     rect (leftMargin, topMargin, canvasWidth, canvasHeight);
     tint(255, 255-alphaSlider.value());
     image(img[currentPreset], leftMargin, topMargin, canvasWidth, canvasHeight);
+    
+    
+    // UI text elements
     push();
     fill(0);
     translate(0,0,10); 
-    text("carte <----------> sons", gridX * 12, gridY);
+    text("carte <----------> sons", gridX * 12, 1.5 * gridY);
+    text("<- Ajouter\n  un son", leftMargin + gridX * 6.2, gridY);
+    text("Charger une\n autre image", leftMargin + 6 * gridX, topMargin + canvasHeight + 0.3 * gridY  );
+    text("CARTES", 0.5 * gridX, topMargin + 1.7* gridY);
     pop();
     
     // draw listener (mouse) position
@@ -371,7 +385,7 @@ function windowResized() {
     
     // resize preset buttons
     for (let i = 0; i < presetButtons.length ; i++){
-          presetButtons[i].position(0, topOffset+topMargin + i * 2 * gridY);
+          presetButtons[i].position(0, topOffset+topMargin + (i+1) * 2 * gridY);
           presetButtons[i].size(gridX*2, 2 * gridY);
     }
     
@@ -402,7 +416,7 @@ function windowResized() {
     selectSound.size(gridX*4,2 * gridY);
     
     // slider
-    alphaSlider.position(gridX * 12, topOffset + gridY);
+    alphaSlider.position(gridX * 12, topOffset );
     alphaSlider.size(gridX * 4);
 }
         
@@ -477,7 +491,9 @@ class Soundspot {
     }
 
     display() {
-        noStroke();
+        push();
+        //noStroke();
+        stroke(0,alphaSlider.value());
         if (this.selected){
             fill(100,100,100,alphaSlider.value());
         }
@@ -485,7 +501,7 @@ class Soundspot {
             fill (240,240,240,alphaSlider.value());
         ellipse(leftMargin + this.x * canvasWidth, topMargin + this.y * canvasHeight, this.size * gridX, this.size * gridY);
         fill (0,0,0,alphaSlider.value());
-        push();
+        
         translate(0,0,1);  // make text appear in front
         text(this.label, leftMargin + this.x * canvasWidth -gridX, topMargin + this.y * canvasHeight - gridY*0.7);
         pop();
@@ -526,7 +542,7 @@ function updatePlayer(){
     }
 }
 
-
+// email function to ssl php-server 
 async function sendEmail(_message) {
     const data = {
         to: 'jyg@gumo.fr',
@@ -546,6 +562,19 @@ async function sendEmail(_message) {
     // la page html renvoyée par le script php
     console.log(result);
 }
-
- 
+// no ssl php server : using html 'mailto'
+function sendMail() 
+            {
+              var _data =   saveData(currentPreset);
+              var mailsubject = "Atelier Écoute et Invention : Travail sur la cartographie sonore";
+              var _text = "Bonjour, voici ma version de la cartographie \n\n"+ inp.value()+ "\n\n\nIMPORTANT : Merci d'ajouter en pièce jointe l'image de fond de carte utilisée. \n\n\n\n==============NE RIEN ECRIRE APRÈS CETTE LIGNE==============\n\n";
+                var link = "mailto:jyg@gumo.fr"
+                + "?cc="
+                + "&subject=" + encodeURIComponent(mailsubject)
+                + "&body=" + encodeURIComponent(_text + _data)
+                ;
+    
+                window.location.href = link;
+            }
+     
  
