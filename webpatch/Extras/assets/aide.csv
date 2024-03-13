@@ -1,2 +1,4 @@
 type,x,y,size,file
 image,assets/fond_de_carte.jpg,,,
+menu_item,groupeB, piano_Helene_1
+alpha_slider,170

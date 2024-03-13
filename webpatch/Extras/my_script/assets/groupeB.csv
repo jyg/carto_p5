@@ -1,8 +1,47 @@
 type,x,y,size,file
-menu_item,groupeB,piano_Helene_1,,
-menu_item,groupeB,piano_Helene_2,,
-menu_item,groupeB,piano_Helene_3,,
-menu_item,groupeB,piano_Helene_4,,
-menu_item,groupeB,piano_Helene_5,,
-menu_item,groupeB,piano_Helene_6,,
-menu_item,groupeB,piano_Helene_7,,
+sound,0.6345252774352652,0.49579439252336444,1,groupeB/violon_Allois_2
+sound,0.628360049321825,0.7037383177570093,1,groupeB/violon_Allois_3
+sound,0.691553637484587,0.3836448598130841,1,groupeB/piano_Roman_7
+sound,0.20295930949445132,0.4747663551401869,1,groupeB/guitare_Yassine_3
+sound,0.4079531442663379,0.7621495327102803,1,groupeB/guitare_Yassine_1
+sound,0.5389642416769421,0.3509345794392523,1,groupeB/piano_Roman_4
+sound,0.5852034525277435,0.2294392523364486,1,groupeB/piano_Helene_1
+sound,0.8487669543773121,0.26682242990654204,1,groupeB/guitare_Charles_1
+sound,0.7008014796547473,0.2457943925233645,1,groupeB/piano_Helene_4
+sound,0.8287299630086314,0.43271028037383175,1,groupeB/piano_Roman_7
+menu_item,groupeB, piano_Helene_1
+menu_item,groupeB, piano_Helene_2
+menu_item,groupeB, piano_Helene_3
+menu_item,groupeB, piano_Helene_4
+menu_item,groupeB, piano_Helene_5
+menu_item,groupeB, piano_Helene_6
+menu_item,groupeB, piano_Helene_7
+menu_item,groupeB, guitare_Charles_1
+menu_item,groupeB, guitare_Yassine_1
+menu_item,groupeB, piano_Helene_3
+menu_item,groupeB, piano_Roman_2
+menu_item,groupeB, violon_Allois_1
+menu_item,groupeB, guitare_Charles_2
+menu_item,groupeB, guitare_Yassine_2
+menu_item,groupeB, piano_Helene_4
+menu_item,groupeB, piano_Roman_3
+menu_item,groupeB, violon_Allois_2
+menu_item,groupeB, guitare_Charles_3
+menu_item,groupeB, guitare_Yassine_3
+menu_item,groupeB, piano_Helene_5
+menu_item,groupeB, piano_Roman_4
+menu_item,groupeB, violon_Allois_3
+menu_item,groupeB, guitare_Charles_4
+menu_item,groupeB, guitare_Yassine_4
+menu_item,groupeB, piano_Helene_6
+menu_item,groupeB, piano_Roman_5
+menu_item,groupeB, violon_Allois_4
+menu_item,groupeB, guitare_Charles_5
+menu_item,groupeB, piano_Helene_1
+menu_item,groupeB, piano_Helene_7
+menu_item,groupeB, piano_Roman_6
+menu_item,groupeB, guitare_Yassine_1
+menu_item,groupeB, piano_Helene_2
+menu_item,groupeB, piano_Roman_1
+menu_item,groupeB, piano_Roman_7
+alpha_slider,139
