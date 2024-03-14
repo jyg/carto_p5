@@ -9,7 +9,7 @@ let msg;    //   ?
 let table;  // table used for importing session
 
 let img = []; // array of background images for each preset
-//let imgFileName = [];  // array of image filenames for each preset
+let startupImg;  // image for startup
 
 let url = 'https://s184785159.onlinehome.fr/carto/mail.php';  // for posting table
 
@@ -250,7 +250,7 @@ function preload(){
         }
             
     } 
-
+    startupImg = loadImage('assets/' + presetList[0] + '.jpg');
 }
 
 
@@ -322,7 +322,11 @@ function setup(){
     player_x = 0.5;
     player_y = 0.5;
     
-      
+    // this call crashed the webapp
+    // DO NOT SEND MESSAGES TO PD UNTIL THE AUDIO ENGINE IS LOADED.
+    // TO DO : Signal it as an issue ?
+    
+    //getMyPreset(0);  // The workaround is to call this function inside mouseClicked()
     
     windowResized(); 
 }
@@ -341,8 +345,11 @@ function draw(){
     stroke(0,alphaSlider.value());
     rect (leftMargin, topMargin, canvasWidth, canvasHeight);
     tint(255, 255-alphaSlider.value());
-    if (currentPreset > -1){
+    if (currentPreset > -1){    
         image(img[currentPreset], leftMargin, topMargin, canvasWidth, canvasHeight);
+    }
+    else {
+        image(startupImg, leftMargin, topMargin, canvasWidth, canvasHeight);
     }
     
     
