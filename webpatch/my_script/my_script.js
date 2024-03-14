@@ -272,7 +272,7 @@ function setup(){
     
     // detect Start-audio-button and add vertical offset
     if(document.getElementById("Start-Audio-Button") !== null){
-        topOffset = 40;
+        topOffset = 32;
     }
     
     selectSound = createSelect();
