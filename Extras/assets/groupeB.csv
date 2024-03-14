@@ -18,31 +18,31 @@ sound,0.725,0.7056972789115646,1,groupeB/piano_Roman_3
 sound,0.8078804347826087,0.8842687074829932,1,groupeB/piano_Helene_4
 sound,0.2888586956521739,0.33367346938775516,1,groupeB/guitare_Yassine_4
 sound,0.14483695652173914,0.8332482993197279,1,groupeB/violon_Allois_2
-menu_item,groupeB, guitare_Charles_1
-menu_item,groupeB, guitare_Charles_2
-menu_item,groupeB, guitare_Charles_3
-menu_item,groupeB, guitare_Charles_4
-menu_item,groupeB, guitare_Charles_5
-menu_item,groupeB, guitare_Yassine_1
-menu_item,groupeB, guitare_Yassine_2
-menu_item,groupeB, guitare_Yassine_3
-menu_item,groupeB, guitare_Yassine_4
-menu_item,groupeB, piano_Helene_1
-menu_item,groupeB, piano_Helene_2
-menu_item,groupeB, piano_Helene_3
-menu_item,groupeB, piano_Helene_4
-menu_item,groupeB, piano_Helene_5
-menu_item,groupeB, piano_Helene_6
-menu_item,groupeB, piano_Helene_7
-menu_item,groupeB, piano_Roman_1
-menu_item,groupeB, piano_Roman_2
-menu_item,groupeB, piano_Roman_3
-menu_item,groupeB, piano_Roman_4
-menu_item,groupeB, piano_Roman_5
-menu_item,groupeB, piano_Roman_6
-menu_item,groupeB, piano_Roman_7
-menu_item,groupeB, violon_Allois_1
-menu_item,groupeB, violon_Allois_2
-menu_item,groupeB, violon_Allois_3
-menu_item,groupeB, violon_Allois_4
+menu_item,groupeB,guitare_Charles_1
+menu_item,groupeB,guitare_Charles_2
+menu_item,groupeB,guitare_Charles_3
+menu_item,groupeB,guitare_Charles_4
+menu_item,groupeB,guitare_Charles_5
+menu_item,groupeB,guitare_Yassine_1
+menu_item,groupeB,guitare_Yassine_2
+menu_item,groupeB,guitare_Yassine_3
+menu_item,groupeB,guitare_Yassine_4
+menu_item,groupeB,piano_Helene_1
+menu_item,groupeB,piano_Helene_2
+menu_item,groupeB,piano_Helene_3
+menu_item,groupeB,piano_Helene_4
+menu_item,groupeB,piano_Helene_5
+menu_item,groupeB,piano_Helene_6
+menu_item,groupeB,piano_Helene_7
+menu_item,groupeB,piano_Roman_1
+menu_item,groupeB,piano_Roman_2
+menu_item,groupeB,piano_Roman_3
+menu_item,groupeB,piano_Roman_4
+menu_item,groupeB,piano_Roman_5
+menu_item,groupeB,piano_Roman_6
+menu_item,groupeB,piano_Roman_7
+menu_item,groupeB,violon_Allois_1
+menu_item,groupeB,violon_Allois_2
+menu_item,groupeB,violon_Allois_3
+menu_item,groupeB,violon_Allois_4
 alpha_slider,50

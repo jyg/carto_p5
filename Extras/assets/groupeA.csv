@@ -17,40 +17,40 @@ sound,0.4188137164040779,0.8717987804878049,1,groupeA/percu_Eliott_5
 sound,0.13266913809082487,0.20297256097560978,1,groupeA/guitare_Joseph_3
 sound,0.710054347826087,0.4718537414965987,1,groupeA/piano_norgyun_9
 sound,0.4559782608695652,0.10195578231292518,1,groupeA/guitare_Joseph_4
-menu_item,groupeA, guitare_Arthur_1
-menu_item,groupeA, guitare_Arthur_2
-menu_item,groupeA, guitare_Arthur_7
-menu_item,groupeA, guitare_Joseph_1
-menu_item,groupeA, guitare_Joseph_2
-menu_item,groupeA, guitare_Joseph_3
-menu_item,groupeA, guitare_Joseph_4
-menu_item,groupeA, percu_Eliott_1
-menu_item,groupeA, percu_Eliott_2
-menu_item,groupeA, percu_Eliott_3
-menu_item,groupeA, percu_Eliott_4
-menu_item,groupeA, percu_Eliott_5
-menu_item,groupeA, piano_Juliette_1
-menu_item,groupeA, piano_Juliette_2
-menu_item,groupeA, piano_Juliette_3
-menu_item,groupeA, piano_Juliette_4
-menu_item,groupeA, piano_Juliette_5
-menu_item,groupeA, piano_Juliette_6
-menu_item,groupeA, piano_Juliette_7
-menu_item,groupeA, piano_norgyun_1
-menu_item,groupeA, piano_norgyun_2
-menu_item,groupeA, piano_norgyun_3
-menu_item,groupeA, piano_norgyun_4
-menu_item,groupeA, piano_norgyun_5
-menu_item,groupeA, piano_norgyun_6
-menu_item,groupeA, piano_norgyun_7
-menu_item,groupeA, piano_norgyun_8
-menu_item,groupeA, piano_norgyun_9
-menu_item,groupeA, piano_norgyun_10
-menu_item,groupeA, piano_norgyun_11
-menu_item,groupeA, piano_norgyun_12
-menu_item,groupeA, piano_norgyun_13
-menu_item,groupeA, piano_norgyun_15
-menu_item,groupeA, trompette_Iassine_1
-menu_item,groupeA, trompette_Iassine_2
-menu_item,groupeA, trompette_Iassine_3
+menu_item,groupeA,guitare_Arthur_1
+menu_item,groupeA,guitare_Arthur_2
+menu_item,groupeA,guitare_Arthur_7
+menu_item,groupeA,guitare_Joseph_1
+menu_item,groupeA,guitare_Joseph_2
+menu_item,groupeA,guitare_Joseph_3
+menu_item,groupeA,guitare_Joseph_4
+menu_item,groupeA,percu_Eliott_1
+menu_item,groupeA,percu_Eliott_2
+menu_item,groupeA,percu_Eliott_3
+menu_item,groupeA,percu_Eliott_4
+menu_item,groupeA,percu_Eliott_5
+menu_item,groupeA,piano_Juliette_1
+menu_item,groupeA,piano_Juliette_2
+menu_item,groupeA,piano_Juliette_3
+menu_item,groupeA,piano_Juliette_4
+menu_item,groupeA,piano_Juliette_5
+menu_item,groupeA,piano_Juliette_6
+menu_item,groupeA,piano_Juliette_7
+menu_item,groupeA,piano_norgyun_1
+menu_item,groupeA,piano_norgyun_2
+menu_item,groupeA,piano_norgyun_3
+menu_item,groupeA,piano_norgyun_4
+menu_item,groupeA,piano_norgyun_5
+menu_item,groupeA,piano_norgyun_6
+menu_item,groupeA,piano_norgyun_7
+menu_item,groupeA,piano_norgyun_8
+menu_item,groupeA,piano_norgyun_9
+menu_item,groupeA,piano_norgyun_10
+menu_item,groupeA,piano_norgyun_11
+menu_item,groupeA,piano_norgyun_12
+menu_item,groupeA,piano_norgyun_13
+menu_item,groupeA,piano_norgyun_15
+menu_item,groupeA,trompette_Iassine_1
+menu_item,groupeA,trompette_Iassine_2
+menu_item,groupeA,trompette_Iassine_3
 alpha_slider,49

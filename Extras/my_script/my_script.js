@@ -175,7 +175,7 @@ function saveData(_preset){
             newRow.setString(1, table.getString(i,1));
             newRow.setString(2, table.getString(i,2));
             // append in tableString
-            tableString += 'menu_item,' + table.getString(i,1) + ', ' + table.getString(i,2) + '\n';
+            tableString += 'menu_item,' + table.getString(i,1) + ',' + table.getString(i,2) + '\n';
        }
         else if (type == 'other'){
             // import other data here
@@ -322,8 +322,7 @@ function setup(){
     player_x = 0.5;
     player_y = 0.5;
     
-    // load first preset
-    getMyPreset(0);  
+      
     
     windowResized(); 
 }
@@ -342,13 +341,18 @@ function draw(){
     stroke(0,alphaSlider.value());
     rect (leftMargin, topMargin, canvasWidth, canvasHeight);
     tint(255, 255-alphaSlider.value());
-    image(img[currentPreset], leftMargin, topMargin, canvasWidth, canvasHeight);
+    if (currentPreset > -1){
+        image(img[currentPreset], leftMargin, topMargin, canvasWidth, canvasHeight);
+    }
     
     
     // UI text elements
     push();
     fill(0);
     translate(0,0,10); 
+    if (currentPreset < 0){
+        text("ACTIVER LE SON POUR COMMENCER", leftMargin + canvasWidth /2- 3* gridX, topMargin + canvasHeight /2 - gridY);
+    }
     text("carte <----------> sons", gridX * 13, 1.5 * gridY);
     text("<- Ajouter\n  un son", leftMargin + gridX * 6.2, gridY);
     text("Charger une\n autre image", leftMargin + 6 * gridX, topMargin + canvasHeight + 0.3 * gridY  );
@@ -453,6 +457,12 @@ function mouseReleased(){
 }
 
 function mousePressed() {
+    if (currentPreset < 0){
+        // load first preset
+        getMyPreset(0);
+        sendToPd('cursor', [player_x,player_y]);   
+    }
+        
     selectedSpot = -1;
     let returnFalse = ((mouseX > leftMargin)&&(mouseY > topMargin)&&(mouseX < leftMargin + canvasWidth)&&(mouseY < topMargin + canvasHeight));
     if (alphaSlider.value()> 127){  // prevent spot-moving

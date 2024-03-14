@@ -1,24 +1,7 @@
 type,x,y,size,file
-menu_item,concret, cyclic1
-menu_item,concret, cyclic2
-menu_item,concret, cyclic3
-menu_item,concret, reversePlate
-menu_item,concret, reversePlate2
-menu_item,groupeB,guitare_Charles_4,,
-menu_item,groupeB,guitare_Charles_5,,
-menu_item,groupeB,guitare_Yassine_1,,
-menu_item,groupeB,guitare_Yassine_2,,
-menu_item,groupeB,guitare_Yassine_3,,
-menu_item,groupeB,guitare_Yassine_4,,
-menu_item,groupeB,piano_Helene_1,,
-menu_item,groupeB,piano_Helene_2,,
-menu_item,groupeB,piano_Helene_3,,
-menu_item,groupeB,piano_Helene_4,,
-menu_item,groupeB,piano_Helene_5,,
-menu_item,groupeB,piano_Helene_6,,
-menu_item,groupeB,piano_Helene_7,,
-menu_item,groupeB,piano_Roman_1,,
-menu_item,groupeB,piano_Roman_2,,
-menu_item,groupeB,piano_Roman_3,,
-menu_item,groupeB,piano_Roman_4,,
+menu_item,concret,cyclic1
+menu_item,concret,cyclic2
+menu_item,concret,cyclic3
+menu_item,concret,reversePlate
+menu_item,concret,reversePlate2
 alpha_slider,128

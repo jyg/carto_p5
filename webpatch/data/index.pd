@@ -1,4 +1,4 @@
-#N canvas 1354 196 1014 775 12;
+#N canvas 978 204 1014 775 12;
 #X obj 58 256 r addObject;
 #X obj 566 290 r updateObject;
 #X obj 313 103 r deleteAll;
@@ -64,8 +64,8 @@
 #X floatatom 670 420 5 0 0 0 - - - 0;
 #X obj 328 632 *~ 1;
 #X obj 408 632 *~ 1;
-#X obj 308 576 clone -s 1 Libs/soundspot 16;
-#X obj 229 355 poly 16 1;
+#X obj 308 576 clone -s 1 Libs/soundspot 20;
+#X obj 229 355 poly 20 1;
 #X connect 0 0 6 0;
 #X connect 1 0 15 0;
 #X connect 2 0 9 0;

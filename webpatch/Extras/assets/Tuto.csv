@@ -1,7 +1,7 @@
 type,x,y,size,file
-menu_item,concret, cyclic1
-menu_item,concret, cyclic2
-menu_item,concret, cyclic3
-menu_item,concret, reversePlate
-menu_item,concret, reversePlate2
+menu_item,concret,cyclic1
+menu_item,concret,cyclic2
+menu_item,concret,cyclic3
+menu_item,concret,reversePlate
+menu_item,concret,reversePlate2
 alpha_slider,128
