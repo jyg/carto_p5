@@ -1,54 +1,56 @@
 type,x,y,size,file
-menu_item,groupeA,guitare_Arthur_1,,
-menu_item,groupeA,guitare_Arthur_2,,
-menu_item,groupeA,guitare_Arthur_7,,
-menu_item,groupeA,guitare_Joseph_1,,
-menu_item,groupeA,guitare_Joseph_2,,
-menu_item,groupeA,guitare_Joseph_3,,
-menu_item,groupeA,guitare_Joseph_4,,
-menu_item,groupeA,percu_Eliott_1,,
-menu_item,groupeA,percu_Eliott_2,,
-menu_item,groupeA,percu_Eliott_3,,
-menu_item,groupeA,percu_Eliott_4,,
-menu_item,groupeA,percu_Eliott_5,,
-menu_item,groupeA,piano_Juliette_1,,
-menu_item,groupeA,piano_Juliette_2,,
-menu_item,groupeA,piano_Juliette_3,,
-menu_item,groupeA,piano_Juliette_4,,
-menu_item,groupeA,piano_Juliette_5,,
-menu_item,groupeA,piano_Juliette_6,,
-menu_item,groupeA,piano_Juliette_7,,
-menu_item,groupeA,piano_norgyun_10,,
-menu_item,groupeA,piano_norgyun_11,,
-menu_item,groupeA,piano_norgyun_12,,
-menu_item,groupeA,piano_norgyun_13,,
-menu_item,groupeA,piano_norgyun_15,,
-menu_item,groupeA,piano_norgyun_1,,
-menu_item,groupeA,piano_norgyun_2,,
-menu_item,groupeA,piano_norgyun_3,,
-menu_item,groupeA,piano_norgyun_4,,
-menu_item,groupeA,piano_norgyun_5,,
-menu_item,groupeA,piano_norgyun_6,,
-menu_item,groupeA,piano_norgyun_7,,
-menu_item,groupeA,piano_norgyun_8,,
-menu_item,groupeA,piano_norgyun_9,,
-menu_item,groupeA,trompette_Iassine_1,,
-menu_item,groupeA,trompette_Iassine_2,,
-menu_item,groupeA,trompette_Iassine_3,,
-sound,0.708433734939759,0.172484756097561,1,groupeA/piano_Juliette_1
-sound,0.8161723818350325,0.2753810975609757,1,groupeA/guitare_Joseph_1
+sound,0.6040760869565218,0.28477891156462587,1,groupeA/piano_Juliette_1
+sound,0.7453804347826087,0.2465136054421769,1,groupeA/guitare_Joseph_1
 sound,0.645875810936052,0.833689024390244,1,groupeA/piano_norgyun_10
 sound,0.26241890639481,0.7479420731707317,1,groupeA/piano_norgyun_1
 sound,0.19406858202038926,0.6717225609756098,1,groupeA/trompette_Iassine_1
 sound,0.11413345690454127,0.8622713414634147,1,groupeA/trompette_Iassine_2
-sound,0.5219184430027803,0.7441310975609756,1,groupeA/trompette_Iassine_3
+sound,0.5307065217391305,0.9034013605442177,1,groupeA/trompette_Iassine_3
 sound,0.11297497683039853,0.404954268292683,1,groupeA/percu_Eliott_1
-sound,0.308758109360519,0.5307164634146342,1,groupeA/percu_Eliott_2
+sound,0.15570652173913044,0.525,1,groupeA/percu_Eliott_2
 sound,0.7443466172381835,0.6183689024390244,1,groupeA/piano_norgyun_12
 sound,0.8752548656163115,0.4106707317073171,1,groupeA/piano_norgyun_15
 sound,0.3110750695088044,0.12865853658536588,1,groupeA/guitare_Joseph_2
 sound,0.8683039851714551,0.5230945121951219,1,groupeA/piano_norgyun_3
-sound,0.6574606116774792,0.3344512195121952,1,groupeA/piano_Juliette_3
+sound,0.4926630434782609,0.4484693877551021,1,groupeA/piano_Juliette_3
 sound,0.4188137164040779,0.8717987804878049,1,groupeA/percu_Eliott_5
 sound,0.13266913809082487,0.20297256097560978,1,groupeA/guitare_Joseph_3
-alpha_slider,139
+sound,0.710054347826087,0.4718537414965987,1,groupeA/piano_norgyun_9
+sound,0.4559782608695652,0.10195578231292518,1,groupeA/guitare_Joseph_4
+menu_item,groupeA, guitare_Arthur_1
+menu_item,groupeA, guitare_Arthur_2
+menu_item,groupeA, guitare_Arthur_7
+menu_item,groupeA, guitare_Joseph_1
+menu_item,groupeA, guitare_Joseph_2
+menu_item,groupeA, guitare_Joseph_3
+menu_item,groupeA, guitare_Joseph_4
+menu_item,groupeA, percu_Eliott_1
+menu_item,groupeA, percu_Eliott_2
+menu_item,groupeA, percu_Eliott_3
+menu_item,groupeA, percu_Eliott_4
+menu_item,groupeA, percu_Eliott_5
+menu_item,groupeA, piano_Juliette_1
+menu_item,groupeA, piano_Juliette_2
+menu_item,groupeA, piano_Juliette_3
+menu_item,groupeA, piano_Juliette_4
+menu_item,groupeA, piano_Juliette_5
+menu_item,groupeA, piano_Juliette_6
+menu_item,groupeA, piano_Juliette_7
+menu_item,groupeA, piano_norgyun_1
+menu_item,groupeA, piano_norgyun_2
+menu_item,groupeA, piano_norgyun_3
+menu_item,groupeA, piano_norgyun_4
+menu_item,groupeA, piano_norgyun_5
+menu_item,groupeA, piano_norgyun_6
+menu_item,groupeA, piano_norgyun_7
+menu_item,groupeA, piano_norgyun_8
+menu_item,groupeA, piano_norgyun_9
+menu_item,groupeA, piano_norgyun_10
+menu_item,groupeA, piano_norgyun_11
+menu_item,groupeA, piano_norgyun_12
+menu_item,groupeA, piano_norgyun_13
+menu_item,groupeA, piano_norgyun_15
+menu_item,groupeA, trompette_Iassine_1
+menu_item,groupeA, trompette_Iassine_2
+menu_item,groupeA, trompette_Iassine_3
+alpha_slider,49

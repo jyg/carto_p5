@@ -1,3 +1,30 @@
 type,x,y,size,file
-menu_item,groupeB,piano_Helene_1
+sound,0.4654891304347826,0.28477891156462587,1,concret/cyclic1
+sound,0.8839673913043479,0.2698979591836735,1,concret/cyclic2
+sound,0.6883152173913044,0.11258503401360545,1,concret/cyclic3
+sound,0.6611413043478261,0.26777210884353747,1,concret/reversePlate
+sound,0.4355978260869566,0.12108843537414966,1,concret/reversePlate2
+sound,0.10407608695652175,0.8268707482993197,1,groupeA/piano_Juliette_4
+sound,0.24538043478260874,0.9055272108843537,1,groupeA/piano_Juliette_7
+sound,0.14483695652173914,0.7014455782312925,1,groupeA/piano_norgyun_4
+sound,0.19239130434782611,0.8098639455782313,1,groupeA/piano_norgyun_5
+sound,0.8133152173913044,0.1529761904761905,1,concret/cyclic1
+sound,0.22635869565217395,0.7312074829931973,1,concret/cyclic1
+sound,0.12038043478260871,0.5909013605442177,1,concret/cyclic2
+sound,0.7182065217391305,0.5717687074829931,1,concret/reversePlate2
+sound,0.6828804347826087,0.8077380952380953,1,concret/cyclic3
+menu_item,concret, cyclic1
+menu_item,concret, cyclic2
+menu_item,concret, cyclic3
+menu_item,concret, reversePlate
+menu_item,concret, reversePlate2
+menu_item,groupeA, piano_Juliette_4
+menu_item,groupeA, piano_Juliette_5
+menu_item,groupeA, piano_Juliette_6
+menu_item,groupeA, piano_Juliette_7
+menu_item,groupeA, piano_norgyun_1
+menu_item,groupeA, piano_norgyun_2
+menu_item,groupeA, piano_norgyun_3
+menu_item,groupeA, piano_norgyun_4
+menu_item,groupeA, piano_norgyun_5
 alpha_slider,0
