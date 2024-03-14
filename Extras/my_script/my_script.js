@@ -15,6 +15,7 @@ let url = 'https://s184785159.onlinehome.fr/carto/mail.php';  // for posting tab
 
 let player_x = 0;
 let player_y = 0;
+let player_timeline = 0;
 
 
 let sizeX = window.innerWidth;
@@ -31,7 +32,7 @@ let topOffset = 0;
 let presetButtons = [];
 
 // list of presets. For each name corresponds a .csv file in assets folder
-let presetList = ['aide','tuto','groupeA', 'groupeB'];
+let presetList = ['Intro','Tuto','groupeA', 'groupeB'];
 
 let currentPreset = -1;
 
@@ -318,6 +319,9 @@ function setup(){
     
     alphaSlider = createSlider(0, 255,180);
     
+    player_x = 0.5;
+    player_y = 0.5;
+    
     // load first preset
     getMyPreset(0);  
     
@@ -345,7 +349,7 @@ function draw(){
     push();
     fill(0);
     translate(0,0,10); 
-    text("carte <----------> sons", gridX * 12, 1.5 * gridY);
+    text("carte <----------> sons", gridX * 13, 1.5 * gridY);
     text("<- Ajouter\n  un son", leftMargin + gridX * 6.2, gridY);
     text("Charger une\n autre image", leftMargin + 6 * gridX, topMargin + canvasHeight + 0.3 * gridY  );
     text("CARTES", 0.5 * gridX, topMargin + 1.7* gridY);
@@ -353,11 +357,17 @@ function draw(){
     
     // draw listener (mouse) position
     fill (200,0,0);
-    ellipse(player_x, player_y, gridX/3,gridY/3);
+    player_timeline += deltaTime * 0.002;
+    if(player_timeline > 3){
+        player_timeline = 0;
+    }
+    let curseur_x = leftMargin + player_x * canvasWidth;
+    let curseur_y = topMargin + player_y * canvasHeight;
+    ellipse(curseur_x, curseur_y, 0.1 * gridX * (5+ player_timeline), 0.1 * gridY * (5 + player_timeline));
     if ((mouseIsPressed === true)&&(selectedSpot == -1)) {
         stroke(0,alphaSlider.value());
-        line(player_x, topMargin, player_x, topMargin + canvasHeight);
-        line(leftMargin, player_y, leftMargin + canvasWidth, player_y);
+        line(curseur_x, topMargin, curseur_x, topMargin + canvasHeight);
+        line(leftMargin, curseur_y, leftMargin + canvasWidth, curseur_y);
     }
         // draw tokens
     for (let i = 0; i < spots.length; i++) {
@@ -416,7 +426,7 @@ function windowResized() {
     selectSound.size(gridX*4,2 * gridY);
     
     // slider
-    alphaSlider.position(gridX * 12, topOffset );
+    alphaSlider.position(gridX * 13, topOffset );
     alphaSlider.size(gridX * 4);
 }
         
@@ -535,8 +545,8 @@ function updatePlayer(){
         let _x = (mouseX-leftMargin)/canvasWidth;
         let _y = (mouseY-topMargin)/canvasHeight;
         if ((_x > 0 )&& (_x < 1) && (_y > 0) && (_y < 1)){
-            player_x = mouseX;
-            player_y = mouseY;
+            player_x = _x;
+            player_y = _y;
             sendToPd('cursor', [_x,_y]);         
             }         
     }
