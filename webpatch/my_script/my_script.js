@@ -35,6 +35,7 @@ let presetButtons = [];
 let presetList = ['Intro','Tuto','groupeA', 'groupeB'];
 
 let currentPreset = -1;
+let pdIsStarted = false;
 
 // control buttons
 let clearButton;
@@ -464,12 +465,15 @@ function mouseReleased(){
 }
 
 function mousePressed() {
-    if (currentPreset < 0){
-        // load first preset
-        getMyPreset(0);
-        sendToPd('cursor', [player_x,player_y]);   
-    }
-        
+    if (currentPreset < 0){      
+        if (canSpeakToPd())  {
+            // load first preset
+            getMyPreset(0);
+            sendToPd('cursor', [player_x,player_y]); 
+            }
+        else
+            return;
+    }  
     selectedSpot = -1;
     let returnFalse = ((mouseX > leftMargin)&&(mouseY > topMargin)&&(mouseX < leftMargin + canvasWidth)&&(mouseY < topMargin + canvasHeight));
     if (alphaSlider.value()> 127){  // prevent spot-moving
@@ -547,6 +551,24 @@ class Soundspot {
             return 0;
         }
     }
+}
+
+function canSpeakToPd(){
+    if (pdIsStarted)
+        return true;
+    else {
+        // check audio button status
+        let _iconElement = document.getElementById("SoundIcon"); 
+        if (_iconElement !== null){
+            if  (_iconElement.classList.contains("fa-spinner"))
+                pdIsStarted = false;
+            else
+                pdIsStarted = true;
+        }
+        else    //  no button - pd is not embedded
+            pdIsStarted = true;
+    }
+    return pdIsStarted;
 }
 
 function createNewSpot(){
