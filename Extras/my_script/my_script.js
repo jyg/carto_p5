@@ -362,7 +362,7 @@ function draw(){
     fill(0);
     translate(0,0,10); 
     if (currentPreset < 0){
-        text("ACTIVER LE SON POUR COMMENCER", leftMargin + canvasWidth /2- 3* gridX, topMargin + canvasHeight /2 - gridY);
+        text("ACTIVER LE SON ET CLIQUER ICI POUR COMMENCER", leftMargin + canvasWidth /2- 3* gridX, topMargin + canvasHeight /2 - gridY);
     }
     text("carte <----------> sons", gridX * 13, 1.5 * gridY);
     text("<- Ajouter\n  un son", leftMargin + gridX * 6.2, gridY);
