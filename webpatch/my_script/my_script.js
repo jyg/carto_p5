@@ -53,33 +53,36 @@ let selectSound;
 let inputImage;
 
 function getMyPreset(_i){
-    // refresh color of preset buttons
-    for (let i = 0; i < presetList.length; i++){
-        if (i == _i){
-            presetButtons[i].style('background-color', color(240));
+    if(canSpeakToPd()){
+       
+        // refresh color of preset buttons
+        for (let i = 0; i < presetList.length; i++){
+            if (i == _i){
+                presetButtons[i].style('background-color', color(240));
+            }
+            else {
+              presetButtons[i].style('background-color', color(200));
+            }
+        }
+    
+         // save local storage for currentPreset
+        if(currentPreset > -1){
+            saveData(currentPreset);
+        }
+        // update currentPreset number
+        currentPreset = _i;  
+    
+        // search for local storage (saved as an unique string for now)
+        let tableString = getItem(presetList[currentPreset]+ '.csv');
+        
+        // if not found, load factory preset
+        if(tableString === null) {
+           table = loadTable('assets/'+ presetList[currentPreset]+ '.csv', 'csv','header',loadData);
         }
         else {
-          presetButtons[i].style('background-color', color(200));
+            table = parseTable(tableString);  
+            loadData();
         }
-    }
-
-     // save local storage for currentPreset
-    if(currentPreset > -1){
-        saveData(currentPreset);
-    }
-    // update currentPreset number
-    currentPreset = _i;  
-
-    // search for local storage (saved as an unique string for now)
-    let tableString = getItem(presetList[currentPreset]+ '.csv');
-    
-    // if not found, load factory preset
-    if(tableString === null) {
-       table = loadTable('assets/'+ presetList[currentPreset]+ '.csv', 'csv','header',loadData);
-    }
-    else {
-        table = parseTable(tableString);  
-        loadData();
     }
 }
 
@@ -465,7 +468,8 @@ function mouseReleased(){
 }
 
 function mousePressed() {
-    if (currentPreset < 0){      
+    let returnFalse = ((mouseX > leftMargin)&&(mouseY > topMargin)&&(mouseX < leftMargin + canvasWidth)&&(mouseY < topMargin + canvasHeight));
+    if (!pdIsStarted && returnFalse){      
         if (canSpeakToPd())  {
             // load first preset
             getMyPreset(0);
@@ -475,7 +479,6 @@ function mousePressed() {
             return;
     }  
     selectedSpot = -1;
-    let returnFalse = ((mouseX > leftMargin)&&(mouseY > topMargin)&&(mouseX < leftMargin + canvasWidth)&&(mouseY < topMargin + canvasHeight));
     if (alphaSlider.value()> 127){  // prevent spot-moving
         for (let i = 0; i < spots.length; i++) {
             if(spots[i].checkMouse()){
@@ -491,9 +494,10 @@ function mousePressed() {
         return; 
 }
   
- document.addEventListener('gesturestart', function(e) {
-  e.preventDefault();
- });  
+ // do this prevent default touch interaction
+document.addEventListener('gesturestart', function(e) {
+    e.preventDefault();
+     });  
  
     // Soundspot class
 class Soundspot {
@@ -572,12 +576,14 @@ function canSpeakToPd(){
 }
 
 function createNewSpot(){
-    let i = spots.length; 
-    currentId+=1;
-    spots.push(new Soundspot(currentId, 0.5, 0.5, 1, selectSound.value()));
-    // we send to pd the filename prepended with the foldername
-    sendToPd('addObject', [currentId, spots[i].x, spots[i].y, spots[i].size, selectSound.value()]);        
- }
+    if  (pdIsStarted){
+        let i = spots.length; 
+        currentId+=1;
+        spots.push(new Soundspot(currentId, 0.5, 0.5, 1, selectSound.value()));
+        // we send to pd the filename prepended with the foldername
+        sendToPd('addObject', [currentId, spots[i].x, spots[i].y, spots[i].size, selectSound.value()]);        
+    }
+}
 
 function updatePlayer(){
     if ((selectedSpot == -1)){
