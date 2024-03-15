@@ -361,9 +361,13 @@ function draw(){
     push();
     fill(0);
     translate(0,0,10); 
+    
+        // startup screen
     if (currentPreset < 0){
         text("ACTIVER LE SON ET CLIQUER ICI POUR COMMENCER", leftMargin + canvasWidth /2- 3* gridX, topMargin + canvasHeight /2 - gridY);
     }
+    
+    
     text("carte <----------> sons", gridX * 13, 1.5 * gridY);
     text("<- Ajouter\n  un son", leftMargin + gridX * 6.2, gridY);
     text("Charger une\n autre image", leftMargin + 6 * gridX, topMargin + canvasHeight + 0.3 * gridY  );
@@ -586,6 +590,10 @@ function createNewSpot(){
 }
 
 function updatePlayer(){
+    // prevent web page freeze if pd is not loaded
+    if(!pdIsStarted)
+        return
+        
     if ((selectedSpot == -1)){
         let _x = (mouseX-leftMargin)/canvasWidth;
         let _y = (mouseY-topMargin)/canvasHeight;
