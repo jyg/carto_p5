@@ -14,3 +14,5 @@ function setupOscBridge(){
          // 12000 port destination (vers puredata)
          // 10000 port réception (depuis puredata)
 }
+
+let pdIsInitialized = true;

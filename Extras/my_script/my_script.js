@@ -35,7 +35,6 @@ let presetButtons = [];
 let presetList = ['Intro','Tuto','groupeA', 'groupeB'];
 
 let currentPreset = -1;
-let pdIsStarted = false;
 
 // control buttons
 let clearButton;
@@ -53,7 +52,7 @@ let selectSound;
 let inputImage;
 
 function getMyPreset(_i){
-    if(canSpeakToPd()){
+    if(pdIsInitialized){
        
         // refresh color of preset buttons
         for (let i = 0; i < presetList.length; i++){
@@ -451,10 +450,12 @@ function windowResized() {
         
         
 function mouseDragged() {
-    if (selectedSpot>-1){
-        spots[selectedSpot].move(mouseX,mouseY);
-        }
-    updatePlayer();
+    if(pdIsInitialized){
+        if (selectedSpot>-1){
+            spots[selectedSpot].move(mouseX,mouseY);
+            }
+        updatePlayer();
+    }
 }
 
 function mouseReleased(){
@@ -472,9 +473,8 @@ function mouseReleased(){
 }
 
 function mousePressed() {
-    let returnFalse = ((mouseX > leftMargin)&&(mouseY > topMargin)&&(mouseX < leftMargin + canvasWidth)&&(mouseY < topMargin + canvasHeight));
-    if (!pdIsStarted && returnFalse){      
-        if (canSpeakToPd())  {
+    if (currentPreset < 0){      
+        if (pdIsInitialized)  {
             // load first preset
             getMyPreset(0);
             sendToPd('cursor', [player_x,player_y]); 
@@ -491,6 +491,8 @@ function mousePressed() {
                 }
             }
     }
+    
+    let returnFalse = ((mouseX > leftMargin)&&(mouseY > topMargin)&&(mouseX < leftMargin + canvasWidth)&&(mouseY < topMargin + canvasHeight));
     updatePlayer();
     if (returnFalse) 
         return false;    // do this prevent default touch interaction
@@ -561,26 +563,9 @@ class Soundspot {
     }
 }
 
-function canSpeakToPd(){
-    if (pdIsStarted)
-        return true;
-    else {
-        // check audio button status
-        let _iconElement = document.getElementById("SoundIcon"); 
-        if (_iconElement !== null){
-            if  (_iconElement.classList.contains("fa-spinner"))
-                pdIsStarted = false;
-            else
-                pdIsStarted = true;
-        }
-        else    //  no button - pd is not embedded
-            pdIsStarted = true;
-    }
-    return pdIsStarted;
-}
 
 function createNewSpot(){
-    if  (pdIsStarted){
+    if  (pdIsInitialized){
         let i = spots.length; 
         currentId+=1;
         spots.push(new Soundspot(currentId, 0.5, 0.5, 1, selectSound.value()));
@@ -591,7 +576,7 @@ function createNewSpot(){
 
 function updatePlayer(){
     // prevent web page freeze if pd is not loaded
-    if(!pdIsStarted)
+    if(!pdIsInitialized)
         return
         
     if ((selectedSpot == -1)){
