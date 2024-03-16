@@ -220,7 +220,7 @@ function loadData(){
             currentId ++;
         }
         else if (type == 'menu_item'){
-            selectSound.option(table.getString(i,2),table.getString(i,1)+'/'+table.getString(i,2));
+            selectSound.option(table.getString(i,2),table.getString(i,1)+table.getString(i,2));
         }
         else if (type == 'alpha_slider'){
             alphaSlider.value(table.getNum(i,1));
