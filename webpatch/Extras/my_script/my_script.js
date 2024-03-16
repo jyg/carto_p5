@@ -32,7 +32,7 @@ let topOffset = 0;
 let presetButtons = [];
 
 // list of presets. For each name corresponds a .csv file in assets folder
-let presetList = ['Intro','Tuto','groupeA', 'groupeB'];
+let presetList = ['Intro','Tuto','groupeA', 'groupeB','CarteBlanche'];
 
 let currentPreset = -1;
 
