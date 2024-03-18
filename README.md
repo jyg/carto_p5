@@ -4,7 +4,7 @@ This is my first project using both p5js for GUI and pd4web for audio.
 * https://github.com/charlesneimog/pd4web 
 pd4web enables the use of puredata patches in a web browser. The current pd4web version for this project is 1.2.1
 
-**demo** here https://jyg.github.io/carto_p5/webpatch/index.html
+The project's **demo** is here https://jyg.github.io/carto_p5/webpatch/index.html
 
 ## project folder structure
 
