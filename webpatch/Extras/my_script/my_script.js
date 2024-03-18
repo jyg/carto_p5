@@ -291,7 +291,7 @@ function setup(){
     }
        
     // create clear button
-    clearButton = createButton("Effacer");
+    clearButton = createButton("Effaceur");
     clearButton.mouseClicked(clearCurrentPreset);
     
     // mouseover : How to add popup contextual help ?
@@ -363,13 +363,13 @@ function draw(){
     
         // startup screen
     if (currentPreset < 0){
-        text("ACTIVER LE SON ET CLIQUER ICI POUR COMMENCER", leftMargin + canvasWidth /2- 3* gridX, topMargin + canvasHeight /2 - gridY);
+        text("ACTIVER LE SON POUR COMMENCER", leftMargin + canvasWidth /2- 3* gridX, topMargin + canvasHeight /2 - gridY);
     }
     
     
     text("carte <----------> sons", gridX * 13, 1.5 * gridY);
-    text("<- Ajouter\n  un son", leftMargin + gridX * 6.2, gridY);
-    text("Charger une\n autre image", leftMargin + 6 * gridX, topMargin + canvasHeight + 0.3 * gridY  );
+    text("<- Ajouter\n un son", leftMargin + gridX * 6.2, gridY);
+    text("Charger une autre image\ncomme fond de carte", leftMargin + 6 * gridX, topMargin + canvasHeight + 0.3 * gridY  );
     text("CARTES", 0.5 * gridX, topMargin + 1.7* gridY);
     pop();
     
