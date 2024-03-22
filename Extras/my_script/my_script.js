@@ -11,7 +11,7 @@ let table;  // table used for importing session
 let img = []; // array of background images for each preset
 let startupImg;  // image for startup
 
-let url = 'https://s184785159.onlinehome.fr/carto/mail.php';  // for posting table
+let url = 'https://post.gumo.fr';  // for posting table
 
 let player_x = 0;
 let player_y = 0;
@@ -146,6 +146,8 @@ function handleImage(file) {
 }
   
 function saveData(_preset){
+    if(_preset <0)
+        return;
     // create export struct
     let tableExport = new p5.Table();
     tableExport.addColumn('type');
@@ -304,7 +306,7 @@ function setup(){
     
     // create Export button
     saveButton = createButton("Partager\n Compo"); 
-    saveButton.mouseClicked(sendMail);
+    saveButton.mouseClicked(postToMail);
     
     // Create newSpotButton
     newSpotButton = createButton("+");
@@ -533,14 +535,16 @@ class Soundspot {
 
     display() {
         push();
-        //noStroke();
+        noStroke();
+        fill (240,240,240,alphaSlider.value()* 0.2);
+        ellipse(leftMargin + this.x * canvasWidth, topMargin + this.y * canvasHeight, this.size * gridX * 4, this.size * gridY * 4); 
         stroke(0,alphaSlider.value());
         if (this.selected){
             fill(100,100,100,alphaSlider.value());
         }
         else
             fill (240,240,240,alphaSlider.value());
-        ellipse(leftMargin + this.x * canvasWidth, topMargin + this.y * canvasHeight, this.size * gridX, this.size * gridY);
+        ellipse(leftMargin + this.x * canvasWidth, topMargin + this.y * canvasHeight, gridX, gridY);
         fill (0,0,0,alphaSlider.value());
         
         translate(0,0,1);  // make text appear in front
@@ -590,19 +594,37 @@ function updatePlayer(){
     }
 }
 
-// email function to ssl php-server 
-async function sendEmail(_message) {
-    const data = {
-        to: 'jyg@gumo.fr',
-        subject: 'Cartographie de ' + inp.value(),
-        message: _message
-    };
+// Send formto ssl php-server 
+async function postToMail() {
+    if(currentPreset<0)
+        return;
+        
+    // encode backgroundimage  
+      // Create a new canvas to draw the image
+      const tempCanvas = createGraphics(img[currentPreset].width,img[currentPreset].height);
+      //tempCanvas.hide(); // Hide the canvas element from the DOM
+
+      // Draw the image onto the canvas
+    tempCanvas.image(img[currentPreset], 0, 0,  img[currentPreset].width,img[currentPreset].height);
+
+      // Convert the canvas content to a JPEG data URL
+      const imageDataUrl = tempCanvas.elt.toDataURL('image/jpeg');
+
+        
+        
+        
+        
+    var _message=saveData(currentPreset);
+    const formData = new FormData();
+    formData.append('to', 'jyg@gumo.fr');
+    formData.append('subject', 'Cartographie de ' + inp.value());
+    formData.append('message', _message);
+    formData.append('image',imageDataUrl);
+    
     const response = await fetch(url, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams(data),
+
+        body: formData,
     });
 
     const result = await response.text();
