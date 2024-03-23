@@ -1,0 +1,8 @@
+type,x,y,size,file
+menu_item,acqua/,eau1,,
+menu_item,acqua/,eau2,,
+menu_item,acqua/,eau3,,
+menu_item,acqua/,eau4,,
+menu_item,acqua/,eau5,,
+menu_item,acqua/,eau6,,
+alpha_slider,149,,,

@@ -5,6 +5,7 @@ let spots = []; // array of sound objects
 let selectedSpot = -1;
 let currentId = 0;
 
+
 let msg;    //   ?
 let table;  // table used for importing session
 
@@ -32,7 +33,7 @@ let topOffset = 0;
 let presetButtons = [];
 
 // list of presets. For each name corresponds a .csv file in assets folder
-let presetList = ['Intro','Tuto','groupeA', 'groupeB','CarteBlanche'];
+let presetList = ['Intro','Tuto','groupeA', 'groupeB','CarteBlanche','acqua'];
 
 let currentPreset = -1;
 
@@ -616,7 +617,6 @@ async function postToMail() {
         
     var _message=saveData(currentPreset);
     const formData = new FormData();
-    formData.append('to', 'jyg@gumo.fr');
     formData.append('subject', 'Cartographie de ' + inp.value());
     formData.append('message', _message);
     formData.append('image',imageDataUrl);
@@ -638,7 +638,7 @@ function sendMail()
               var _data =   saveData(currentPreset);
               var mailsubject = "Atelier Écoute et Invention : Travail sur la cartographie sonore";
               var _text = "Bonjour, voici ma version de la cartographie \n\n"+ inp.value()+ "\n\n\nIMPORTANT : Merci d'ajouter en pièce jointe l'image de fond de carte utilisée. \n\n\n\n==============NE RIEN ECRIRE APRÈS CETTE LIGNE==============\n\n";
-                var link = "mailto:jyg@gumo.fr"
+                var link = "mailto:xxx@xxx.xx"
                 + "?cc="
                 + "&subject=" + encodeURIComponent(mailsubject)
                 + "&body=" + encodeURIComponent(_text + _data)
