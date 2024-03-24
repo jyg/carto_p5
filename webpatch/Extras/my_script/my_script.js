@@ -495,8 +495,10 @@ function mouseReleased(){
 }
 
 function mousePressed() {
+    let disableGesture = ((mouseX > leftMargin)&&(mouseY > topMargin)&&(mouseX < leftMargin + canvasWidth)&&(mouseY < topMargin + canvasHeight));
+
     if (currentPreset < 0){      
-        if (pdIsInitialized)  {
+        if (pdIsInitialized && disableGesture)  {
             // load first preset
             getMyPreset(0);
             sendToPd('cursor', [player_x,player_y]); 
@@ -505,7 +507,7 @@ function mousePressed() {
             return;
     }  
     selectedSpot = -1;
-    if (alphaSlider.value()> 127){  // prevent spot-moving
+    if (alphaSlider.value()> 127){  // unlock spots
         for (let i = 0; i < spots.length; i++) {
             if(spots[i].checkMouse()){
                 selectedSpot = i;
@@ -514,9 +516,8 @@ function mousePressed() {
             }
     }
     
-    let returnFalse = ((mouseX > leftMargin)&&(mouseY > topMargin)&&(mouseX < leftMargin + canvasWidth)&&(mouseY < topMargin + canvasHeight));
     updatePlayer();
-    if (returnFalse) 
+    if (disableGesture) 
         return false;    // do this prevent default touch interaction
     else
         return; 
