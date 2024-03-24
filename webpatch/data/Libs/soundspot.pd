@@ -162,6 +162,7 @@
 #X obj 481 484 - 20;
 #X msg 422 530 0 20;
 #X msg 171 145 \$3;
+#X obj 169 170 sqrt;
 #X connect 0 0 5 0;
 #X connect 2 0 14 0;
 #X connect 3 0 44 0;
@@ -234,4 +235,5 @@
 #X connect 50 0 52 0;
 #X connect 51 0 50 1;
 #X connect 52 0 48 0;
-#X connect 53 0 16 2;
+#X connect 53 0 54 0;
+#X connect 54 0 16 2;
