@@ -237,7 +237,7 @@ function loadData(){
     // communicate with pd
     sendToPd('deleteAll','');
     for (let i = 0; i < spots.length; i++) {
-        sendToPd('addObject', [currentId, spots[i].x, spots[i].y, (spots[i].size * gridX * gridY / canvasWidth) / canvasHeight , spots[i].file]);        
+        sendToPd('addObject', [spots[i].id, spots[i].x, spots[i].y, (spots[i].size * gridX * gridY / canvasWidth) / canvasHeight , spots[i].file]);        
        
     }
 }
