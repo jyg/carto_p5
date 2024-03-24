@@ -354,65 +354,64 @@ function draw(){
         push();
         fill (100,200,200);
         stroke(0);
-        rect(leftMargin + canvasWidth / 2, topMargin + canvasHeight / 2, gridX * 4, gridY * 2);
-        translate(gridX * 0.2, gridY,1); 
+        rect(leftMargin + canvasWidth / 2-gridX, topMargin + canvasHeight / 2, gridX * 4, gridY * 2);
+        translate(gridX * -0.8, gridY,1); 
         fill(0);
 
         text(popupText, leftMargin + canvasWidth / 2, topMargin + canvasHeight / 2);
         pop();
-        return;
     }
-
-    
-    // scene rectangle 
-    noFill();
-    stroke(0,alphaSlider.value());
-    rect (leftMargin, topMargin, canvasWidth, canvasHeight);
-    tint(255, 255-alphaSlider.value());
-    if (currentPreset > -1){    
-        image(img[currentPreset], leftMargin, topMargin, canvasWidth, canvasHeight);
-    }
-    else {
-        image(startupImg, leftMargin, topMargin, canvasWidth, canvasHeight);
-    }
-    
-    
-    // UI text elements
-    push();
-    fill(0);
-    translate(0,0,10); 
-    
-        // startup screen
-    if (currentPreset < 0){
-        text("ACTIVER LE SON POUR COMMENCER", leftMargin + canvasWidth /2- 3* gridX, topMargin + canvasHeight /2 - gridY);
-    }
-    
-    
-    text("carte <----------> sons", gridX * 13, 1.5 * gridY);
-    text("<- Ajouter\n un son", leftMargin + gridX * 6.2, gridY);
-    text("Charger une autre image\ncomme fond de carte", leftMargin + 6 * gridX, topMargin + canvasHeight + 0.3 * gridY  );
-    text("CARTES", 0.5 * gridX, topMargin + 1.7* gridY);
-    pop();
-    
-    // draw listener (mouse) position
-    fill (200,0,0);
-    player_timeline += deltaTime * 0.002;
-    if(player_timeline > 3){
-        player_timeline = 0;
-    }
-    let curseur_x = leftMargin + player_x * canvasWidth;
-    let curseur_y = topMargin + player_y * canvasHeight;
-    ellipse(curseur_x, curseur_y, 0.1 * gridX * (5+ player_timeline), 0.1 * gridY * (5 + player_timeline));
-    if ((mouseIsPressed === true)&&(selectedSpot == -1)) {
+    else{
+        
+        // scene rectangle 
+        noFill();
         stroke(0,alphaSlider.value());
-        line(curseur_x, topMargin, curseur_x, topMargin + canvasHeight);
-        line(leftMargin, curseur_y, leftMargin + canvasWidth, curseur_y);
+        rect (leftMargin, topMargin, canvasWidth, canvasHeight);
+        tint(255, 255-alphaSlider.value());
+        if (currentPreset > -1){    
+            image(img[currentPreset], leftMargin, topMargin, canvasWidth, canvasHeight);
+        }
+        else {
+            image(startupImg, leftMargin, topMargin, canvasWidth, canvasHeight);
+        }
+        
+        
+        // UI text elements
+        push();
+        fill(0);
+        translate(0,0,10); 
+        
+            // startup screen
+        if (currentPreset < 0){
+            text("ACTIVER LE SON POUR COMMENCER", leftMargin + canvasWidth /2- 3* gridX, topMargin + canvasHeight /2 - gridY);
+        }
+        
+        
+        text("carte <----------> sons", gridX * 13, 1.5 * gridY);
+        text("<- Ajouter\n un son", leftMargin + gridX * 6.2, gridY);
+        text("Charger une autre image\ncomme fond de carte", leftMargin + 6 * gridX, topMargin + canvasHeight + 0.3 * gridY  );
+        text("CARTES", 0.5 * gridX, topMargin + 1.7* gridY);
+        pop();
+        
+        // draw listener (mouse) position
+        fill (200,0,0);
+        player_timeline += deltaTime * 0.002;
+        if(player_timeline > 3){
+            player_timeline = 0;
+        }
+        let curseur_x = leftMargin + player_x * canvasWidth;
+        let curseur_y = topMargin + player_y * canvasHeight;
+        ellipse(curseur_x, curseur_y, 0.1 * gridX * (5+ player_timeline), 0.1 * gridY * (5 + player_timeline));
+        if ((mouseIsPressed === true)&&(selectedSpot == -1)) {
+            stroke(0,alphaSlider.value());
+            line(curseur_x, topMargin, curseur_x, topMargin + canvasHeight);
+            line(leftMargin, curseur_y, leftMargin + canvasWidth, curseur_y);
+        }
+            // draw tokens
+        for (let i = 0; i < spots.length; i++) {
+            spots[i].display();
+        }
     }
-        // draw tokens
-    for (let i = 0; i < spots.length; i++) {
-        spots[i].display();
-    }
-
  
 }
   
