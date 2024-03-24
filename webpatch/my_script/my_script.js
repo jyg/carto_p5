@@ -237,8 +237,8 @@ function loadData(){
     // communicate with pd
     sendToPd('deleteAll','');
     for (let i = 0; i < spots.length; i++) {
-        sendToPd('addObject', [currentId, spots[i].x, spots[i].y, (spots[i].size * gridX * gridY * 4 / canvasWidth) / canvasHeight , spots[i].file]);        
-       // sendToPd('addObject', [i, spots[i].x, spots[i].y, spots[i].size,spots[i].file]); 
+        sendToPd('addObject', [currentId, spots[i].x, spots[i].y, (spots[i].size * gridX * gridY / canvasWidth) / canvasHeight , spots[i].file]);        
+       
     }
 }
 
@@ -557,7 +557,7 @@ class Soundspot {
         push();
         noStroke();
         fill (240,240,240,alphaSlider.value()* 0.2);
-        ellipse(leftMargin + this.x * canvasWidth, topMargin + this.y * canvasHeight, this.size * gridX * 6, this.size * gridY * 6); 
+        ellipse(leftMargin + this.x * canvasWidth, topMargin + this.y * canvasHeight, this.size * gridX, this.size * gridY ); 
         stroke(0,alphaSlider.value());
         if (this.selected){
             fill(100,100,100,alphaSlider.value());
@@ -573,8 +573,8 @@ class Soundspot {
  }
     
     checkMouse(){
-        let distX = (leftMargin + this.x * canvasWidth - mouseX)/gridX/this.size;
-        let distY = (topMargin + this.y * canvasHeight - mouseY)/gridY/this.size;
+        let distX = (leftMargin + this.x * canvasWidth - mouseX)/gridX;
+        let distY = (topMargin + this.y * canvasHeight - mouseY)/gridY;
         let dist = distX * distX + distY * distY;
         if (dist < 0.25){
             this.selected = 1;
@@ -592,9 +592,9 @@ function createNewSpot(){
     if  (pdIsInitialized){
         let i = spots.length; 
         currentId+=1;
-        spots.push(new Soundspot(currentId, 0.5, 0.5, 1, selectSound.value()));
+        spots.push(new Soundspot(currentId, 0.5, 0.5, 6, selectSound.value()));
         // we send to pd the filename prepended with the foldername
-        sendToPd('addObject', [currentId, spots[i].x, spots[i].y, (spots[i].size * gridX * gridY * 4 / canvasWidth) / canvasHeight , selectSound.value()]);        
+        sendToPd('addObject', [currentId, spots[i].x, spots[i].y, (spots[i].size * gridX * gridY / canvasWidth) / canvasHeight , selectSound.value()]);        
     }
 }
 
