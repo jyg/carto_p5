@@ -393,6 +393,12 @@ function draw(){
         text("CARTES", 0.5 * gridX, topMargin + 1.7* gridY);
         pop();
         
+                    // draw tokens
+        for (let i = 0; i < spots.length; i++) {
+            spots[i].display();
+        }
+
+        
         // draw listener (mouse) position
         fill (200,0,0);
         player_timeline += deltaTime * 0.002;
@@ -406,10 +412,6 @@ function draw(){
             stroke(0,alphaSlider.value());
             line(curseur_x, topMargin, curseur_x, topMargin + canvasHeight);
             line(leftMargin, curseur_y, leftMargin + canvasWidth, curseur_y);
-        }
-            // draw tokens
-        for (let i = 0; i < spots.length; i++) {
-            spots[i].display();
         }
     }
  
