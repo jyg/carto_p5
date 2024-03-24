@@ -4,7 +4,8 @@ let font;
 let spots = []; // array of sound objects
 let selectedSpot = -1;
 let currentId = 0;
-
+let popupTime = 0;
+let popupText = "";
 
 let msg;    //   ?
 let table;  // table used for importing session
@@ -347,6 +348,22 @@ function draw(){
         translate(-sizeX/2,-sizeY/2);
     }
     
+           // draw popup
+    if (popupTime > 0){
+        popupTime -= deltaTime;
+        push();
+        fill (100,200,200);
+        stroke(0);
+        rect(leftMargin + canvasWidth / 2, topMargin + canvasHeight / 2, gridX * 4, gridY * 2);
+        translate(gridX * 0.2, gridY,1); 
+        fill(0);
+
+        text(popupText, leftMargin + canvasWidth / 2, topMargin + canvasHeight / 2);
+        pop();
+        return;
+    }
+
+    
     // scene rectangle 
     noFill();
     stroke(0,alphaSlider.value());
@@ -396,8 +413,10 @@ function draw(){
         spots[i].display();
     }
 
-
+ 
 }
+  
+
   
 function windowResized() {
     sizeX = window.innerWidth;
@@ -613,7 +632,8 @@ async function postToMail() {
       const imageDataUrl = tempCanvas.elt.toDataURL('image/jpeg');
 
         
-        
+    popupText = "Données Envoyées \n avec succès !";
+    popupTime = 2000;
         
         
     var _message=saveData(currentPreset);
@@ -627,9 +647,11 @@ async function postToMail() {
 
         body: formData,
     });
+    
+
 
     const result = await response.text();
-    
+
     // la page html renvoyée par le script php
     console.log(result);
 }
