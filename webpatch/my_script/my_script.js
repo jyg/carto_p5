@@ -499,7 +499,7 @@ function mousePressed() {
     let disableGesture = ((mouseX > leftMargin)&&(mouseY > topMargin)&&(mouseX < leftMargin + canvasWidth)&&(mouseY < topMargin + canvasHeight));
 
     if (currentPreset < 0){      
-        if (pdIsInitialized && disableGesture)  {
+        if (pdIsInitialized)  {  // && disableGesture
             // load first preset
             getMyPreset(0);
             sendToPd('cursor', [player_x,player_y]); 
