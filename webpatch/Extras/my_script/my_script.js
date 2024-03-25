@@ -267,7 +267,7 @@ function setup(){
     if (webgl){
         createCanvas(sizeX, sizeY, WEBGL);
         textFont(font);
-        textSize(10);
+        textSize(14);
     }
     else {
         createCanvas(sizeX, sizeY);
@@ -340,7 +340,7 @@ function setup(){
 
 function draw(){
     // draw background
-    background(220,210, 170);
+    background(220,210, 190);
     
     // only for webgl    
     if (webgl){
@@ -381,9 +381,9 @@ function draw(){
         
             // startup screen
         if (currentPreset < 0){
-            let _infoText = "CHARGEMENT EN COURS";
+            let _infoText = "CHARGEMENT EN COURS ...";
             if (pdIsInitialized)
-                _infoText = "CLIQUER POUR COMMENCER";
+                _infoText = "ACTIVER L'AUDIO POUR COMMENCER";
             text(_infoText, leftMargin + canvasWidth /2- 3* gridX, topMargin + canvasHeight /2 - gridY);
         }    
         text("carte <----------> sons", gridX * 13, 1.5 * gridY);
