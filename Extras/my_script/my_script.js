@@ -3,6 +3,7 @@ let font;
 // soundSpot global variables
 let spots = []; // array of sound objects
 let selectedSpot = -1;
+let editMode = 0;  // edition of object parameters (resize, gain, speed , etc...)
 let currentId = 0;
 let popupTime = 0;
 let popupText = "";
@@ -331,9 +332,7 @@ function setup(){
     player_y = 0.5;
     
     // this call crashed the webapp
-    // DO NOT SEND MESSAGES TO PD UNTIL THE AUDIO ENGINE IS LOADED.
-    // TO DO : Signal it as an issue ?
-    
+    // DO NOT SEND MESSAGES TO PD UNTIL THE AUDIO ENGINE IS LOADED.    
     //getMyPreset(0);  // The workaround is to call this function inside mouseClicked()
     
     windowResized(); 
@@ -348,7 +347,7 @@ function draw(){
         translate(-sizeX/2,-sizeY/2);
     }
     
-           // draw popup
+    // draw popup
     if (popupTime > 0){
         popupTime -= deltaTime;
         push();
@@ -357,13 +356,12 @@ function draw(){
         rect(leftMargin + canvasWidth / 2-gridX, topMargin + canvasHeight / 2, gridX * 4, gridY * 2);
         translate(gridX * -0.8, gridY,1); 
         fill(0);
-
         text(popupText, leftMargin + canvasWidth / 2, topMargin + canvasHeight / 2);
         pop();
     }
     else{
         
-        // scene rectangle 
+        // scene rectangle with background image
         noFill();
         stroke(0,alphaSlider.value());
         rect (leftMargin, topMargin, canvasWidth, canvasHeight);
@@ -384,20 +382,17 @@ function draw(){
             // startup screen
         if (currentPreset < 0){
             text("ACTIVER LE SON POUR COMMENCER", leftMargin + canvasWidth /2- 3* gridX, topMargin + canvasHeight /2 - gridY);
-        }
-        
-        
+        }    
         text("carte <----------> sons", gridX * 13, 1.5 * gridY);
         text("<- Ajouter\n un son", leftMargin + gridX * 6.2, gridY);
         text("Charger une autre image\ncomme fond de carte", leftMargin + 6 * gridX, topMargin + canvasHeight + 0.3 * gridY  );
         text("CARTES", 0.5 * gridX, topMargin + 1.7* gridY);
         pop();
         
-                    // draw tokens
+             // draw objects ('spots')
         for (let i = 0; i < spots.length; i++) {
             spots[i].display();
         }
-
         
         // draw listener (mouse) position
         fill (200,0,0);
@@ -408,7 +403,7 @@ function draw(){
         let curseur_x = leftMargin + player_x * canvasWidth;
         let curseur_y = topMargin + player_y * canvasHeight;
         ellipse(curseur_x, curseur_y, 0.1 * gridX * (5+ player_timeline), 0.1 * gridY * (5 + player_timeline));
-        if ((mouseIsPressed === true)&&(selectedSpot == -1)) {
+        if ((mouseIsPressed === true)&&(selectedSpot === -1)) {
             stroke(0,alphaSlider.value());
             line(curseur_x, topMargin, curseur_x, topMargin + canvasHeight);
             line(leftMargin, curseur_y, leftMargin + canvasWidth, curseur_y);
@@ -489,10 +484,11 @@ function mouseReleased(){
             spots.splice(selectedSpot,1);
         }
         else {
-            spots[selectedSpot].selected = 0;
+           // spots[selectedSpot].selected = 0;
         }
-        selectedSpot = -1;
-        saveData(currentPreset);
+       // selectedSpot = -1;
+       editMode = 0;
+       saveData(currentPreset);
     }
 }
 
@@ -513,7 +509,7 @@ function mousePressed() {
         for (let i = 0; i < spots.length; i++) {
             if(spots[i].checkMouse()){
                 selectedSpot = i;
-                return false;     // do this prevent default touch interaction
+             //   return false;     // do this prevent default touch interaction
                 }
             }
     }
@@ -550,23 +546,42 @@ class Soundspot {
         }
         
     move(_x,_y) {
-        this.x = (_x - leftMargin)/canvasWidth;
-        this.y=  (_y - topMargin)/canvasHeight;
-        sendToPd('updateObject', [ this.id, this.x, this.y]);
-
+        if (editMode === 0){    // drag Mode
+            this.x = (_x - leftMargin)/canvasWidth;
+            this.y=  (_y - topMargin)/canvasHeight;
+        }
+        else if (editMode === 1){   // resize Mode 
+            //leftMargin + this.x * canvasWidth + this.size * gridX * 0.5
+            this.size = max(0.00001,((_x - leftMargin - this.x * canvasWidth)/ gridX/0.5) );
+        
+        }
+        sendToPd('updateObject', [ this.id, this.x, this.y, this.size * gridX * gridY / canvasWidth / canvasHeight]);
     }
 
     display() {
         push();
         noStroke();
-        fill (240,240,240,alphaSlider.value()* 0.2);
-        ellipse(leftMargin + this.x * canvasWidth, topMargin + this.y * canvasHeight, this.size * gridX, this.size * gridY ); 
-        stroke(0,alphaSlider.value());
         if (this.selected){
+            fill (180,180,240,alphaSlider.value()* 0.3);
+            ellipse(leftMargin + this.x * canvasWidth, topMargin + this.y * canvasHeight, this.size * gridX, this.size * gridY ); 
+            // resize handle           
+            fill (0,0,255,alphaSlider.value()* 0.8);
+            push();
+              translate(leftMargin + this.x * canvasWidth + this.size * gridX * 0.5 -gridX  * 0.2,topMargin + this.y * canvasHeight - gridY * 0.2,0);
+              rect(0,0, gridX * 0.4, gridY * 0.4);
+              translate (0, gridY * -0.2, 1); 
+              text("r="+int(this.size * 10), 0, 0);
+            pop();
+            // move handle            
             fill(100,100,100,alphaSlider.value());
         }
-        else
+        else{
+            fill (240,240,240,alphaSlider.value()* 0.2);
+            ellipse(leftMargin + this.x * canvasWidth, topMargin + this.y * canvasHeight, this.size * gridX, this.size * gridY ); 
+
             fill (240,240,240,alphaSlider.value());
+        }
+        stroke(0,alphaSlider.value());
         ellipse(leftMargin + this.x * canvasWidth, topMargin + this.y * canvasHeight, gridX, gridY);
         fill (0,0,0,alphaSlider.value());
         
@@ -576,10 +591,21 @@ class Soundspot {
  }
     
     checkMouse(){
-        let distX = (leftMargin + this.x * canvasWidth - mouseX)/gridX;
-        let distY = (topMargin + this.y * canvasHeight - mouseY)/gridY;
-        let dist = distX * distX + distY * distY;
-        if (dist < 0.25){
+        // if spot already selected, check if handles are clicked
+        if (this.selected === 1){
+            // check resize handle
+            let _distX = ( leftMargin + this.x * canvasWidth + this.size * gridX * 0.5 - mouseX )/gridX;
+            let _distY = ( topMargin + this.y * canvasHeight - mouseY ) /gridY;
+            let _dist = _distX * _distX + _distY * _distY;
+            if (_dist < 0.16){
+                editMode = 1; // resize Mode             
+                return 1;
+            }
+        }
+        let _distX = (leftMargin + this.x * canvasWidth - mouseX)/gridX;
+        let _distY = (topMargin + this.y * canvasHeight - mouseY)/gridY;
+        let _dist = _distX * _distX + _distY * _distY;
+        if (_dist < 0.25){    // move handle is an ellipse with dimensions  (gridX/2 , gridY/2)
             this.selected = 1;
             return 1;
         }
