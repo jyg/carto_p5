@@ -340,7 +340,7 @@ function setup(){
 
 function draw(){
     // draw background
-    background(200);
+    background(220,210, 170);
     
     // only for webgl    
     if (webgl){
@@ -381,7 +381,10 @@ function draw(){
         
             // startup screen
         if (currentPreset < 0){
-            text("ACTIVER LE SON POUR COMMENCER", leftMargin + canvasWidth /2- 3* gridX, topMargin + canvasHeight /2 - gridY);
+            let _infoText = "CHARGEMENT EN COURS";
+            if (pdIsInitialized)
+                _infoText = "CLIQUER POUR COMMENCER";
+            text(_infoText, leftMargin + canvasWidth /2- 3* gridX, topMargin + canvasHeight /2 - gridY);
         }    
         text("carte <----------> sons", gridX * 13, 1.5 * gridY);
         text("<- Ajouter\n un son", leftMargin + gridX * 6.2, gridY);
@@ -562,9 +565,7 @@ class Soundspot {
         push();
         noStroke();
         if (this.selected){
-            fill (180,180,240,alphaSlider.value()* 0.3);
-            ellipse(leftMargin + this.x * canvasWidth, topMargin + this.y * canvasHeight, this.size * gridX, this.size * gridY ); 
-            // resize handle           
+            // draw handle for resizing          
             fill (0,0,255,alphaSlider.value()* 0.8);
             push();
               translate(leftMargin + this.x * canvasWidth + this.size * gridX * 0.5 -gridX  * 0.2,topMargin + this.y * canvasHeight - gridY * 0.2,0);
@@ -572,19 +573,26 @@ class Soundspot {
               translate (0, gridY * -0.2, 1); 
               text("r="+int(this.size * 10), 0, 0);
             pop();
-            // move handle            
-            fill(100,100,100,alphaSlider.value());
+        }
+        // specify color for size ellipse and paint it
+        if(this.selected && (editMode === 1)){
+            fill (180,180,240,alphaSlider.value()* 0.3);
         }
         else{
             fill (240,240,240,alphaSlider.value()* 0.2);
-            ellipse(leftMargin + this.x * canvasWidth, topMargin + this.y * canvasHeight, this.size * gridX, this.size * gridY ); 
-
+        }          
+        ellipse(leftMargin + this.x * canvasWidth, topMargin + this.y * canvasHeight, this.size * gridX, this.size * gridY ); 
+        // specify color for center ellipse and paint it
+        stroke(0,alphaSlider.value());
+        if (this.selected){
+            fill(100,100,100,alphaSlider.value());
+        }
+        else{
             fill (240,240,240,alphaSlider.value());
         }
-        stroke(0,alphaSlider.value());
         ellipse(leftMargin + this.x * canvasWidth, topMargin + this.y * canvasHeight, gridX, gridY);
+        // paint label
         fill (0,0,0,alphaSlider.value());
-        
         translate(0,0,1);  // make text appear in front
         text(this.label, leftMargin + this.x * canvasWidth -gridX, topMargin + this.y * canvasHeight - gridY*0.7);
         pop();
