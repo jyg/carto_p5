@@ -238,7 +238,7 @@ function loadData(){
     // communicate with pd
     sendToPd('deleteAll','');
     for (let i = 0; i < spots.length; i++) {
-        sendToPd('addObject', [spots[i].id, spots[i].x, spots[i].y, (spots[i].size * gridX * gridY / canvasWidth) / canvasHeight , spots[i].file]);        
+        sendToPd('addObject', [spots[i].id, spots[i].x, spots[i].y, spots[i].size * sqrt (gridX * gridY / canvasWidth / canvasHeight) , spots[i].file]);        
        
     }
 }
@@ -558,7 +558,7 @@ class Soundspot {
             this.size = max(0.00001,((_x - leftMargin - this.x * canvasWidth)/ gridX/0.5) );
         
         }
-        sendToPd('updateObject', [ this.id, this.x, this.y, this.size * gridX * gridY / canvasWidth / canvasHeight]);
+        sendToPd('updateObject', [ this.id, this.x, this.y, this.size * sqrt (gridX * gridY / canvasWidth / canvasHeight)]);
     }
 
     display() {
@@ -631,7 +631,7 @@ function createNewSpot(){
         currentId+=1;
         spots.push(new Soundspot(currentId, 0.5, 0.5, 6, selectSound.value()));
         // we send to pd the filename prepended with the foldername
-        sendToPd('addObject', [currentId, spots[i].x, spots[i].y, (spots[i].size * gridX * gridY / canvasWidth) / canvasHeight , selectSound.value()]);        
+        sendToPd('addObject', [currentId, spots[i].x, spots[i].y, spots[i].size * sqrt (gridX * gridY / canvasWidth / canvasHeight) , selectSound.value()]);        
     }
 }
 
