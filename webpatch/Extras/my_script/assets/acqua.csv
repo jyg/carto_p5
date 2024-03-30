@@ -1,4 +1,13 @@
 type,x,y,size,file
+sound,0.32880116959064326,0.5029829545454546,8.315058479532164,acqua/PetitesBullesDenses
+sound,0.1579312865497076,0.3723011363636364,7.163742690058481,acqua/GrossesBulles
+sound,0.6417580409356725,0.7636363636363637,8.845029239766083,acqua/RecipientEauAgiter
+sound,0.2346856725146199,0.728125,8.680555555555555,acqua/SoufflePailleLent
+sound,0.36854897660818714,0.7970170454545454,6,acqua/SoufflePailleRapide
+sound,0.4891630116959064,0.8786931818181819,6,acqua/SoufflePailleTendu
+sound,0.05879020467836257,0.08536931818181817,7.328216374269007,acqua/Ruissellement
+sound,0.8213084795321637,0.2203125,8.461257309941516,acqua/Souffle-Bulle
+sound,0.7948099415204678,0.5193181818181819,7.7119883040935635,acqua/HistoirePailleBulles
 menu_item,acqua/,GrossesBulles,,
 menu_item,acqua/,PetitesBullesDenses,,
 menu_item,acqua/,RecipientEauAgiter,,
@@ -8,4 +17,4 @@ menu_item,acqua/,SoufflePailleTendu,,
 menu_item,acqua/,Ruissellement,,
 menu_item,acqua/,Souffle-Bulle,,
 menu_item,acqua/,HistoirePailleBulles,,
-alpha_slider,149,,,
+alpha_slider,149
